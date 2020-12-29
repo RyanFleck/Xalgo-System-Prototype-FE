@@ -16,10 +16,18 @@ function Intro({name}) {
           <Box backgroundColor="#F6F5F2" p={4}>
             <Grid gridTemplateRows="auto auto auto" height="85vh">
                 <Box>
-                    <Text variant="formtitle">Welcome, {name}</Text>
+                    <Text variant="formtitle">{name ? `Welcome, ${name}`:"Welcome."}</Text>
                     <Box p={2} />
                     <Text color="textb">
                         Use the XRM interface to construct rules using the Oughtomation method. Click on the Editor tab to create a rule, or browse rules you have already written using the dashboard tab.
+                    </Text>
+                    <Box p={1} />
+                    <Text color="textb">
+                        If you have not yet created an account, please do so at <a href="https://xalgo-system.herokuapp.com/accounts/signup/">https://xalgo-system.herokuapp.com/accounts/signup/</a>
+                    </Text>
+                    <Box p={1} />
+                    <Text color="textb">
+                        We are currently reworking our authentication scheme, so please be patient as the editor is currently non-functional.
                     </Text>
                 </Box>
                 <Box />
