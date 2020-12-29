@@ -107,7 +107,7 @@ const Button = styled.button(
           boxShadow: 'none',
           color: '#DBEAFF',
         },
-      }
+      },
     },
   })
 );

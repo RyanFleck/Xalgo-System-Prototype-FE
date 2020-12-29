@@ -10,7 +10,7 @@ export default function Subbutton(props) {
         <Flex alignItems="end" justifyContent="flex-start">
           <Text color="text">{content || 'New Field'}</Text>
           <Box padding={1} />
-          <Icon name="ex" fill="#ED9C91"/>
+          <Icon name="ex" fill="#ED9C91" />
         </Flex>
       </Button>
       <Box padding={1} />

@@ -785,9 +785,18 @@ export default class EditorV1 extends React.Component {
                             label: 'Guideline, Instruction, or Policy',
                           },
                           { value: 'Code of Conduct', label: 'Code of Conduct' },
-                          { value: 'Regulation or Directive', label: 'Regulation or Directive' },
-                          { value: 'Common Law or Case Law', label: 'Common Law or Case Law' },
-                          { value: 'Statute or Legislation', label: 'Statute or Legislation' },
+                          {
+                            value: 'Regulation or Directive',
+                            label: 'Regulation or Directive',
+                          },
+                          {
+                            value: 'Common Law or Case Law',
+                            label: 'Common Law or Case Law',
+                          },
+                          {
+                            value: 'Statute or Legislation',
+                            label: 'Statute or Legislation',
+                          },
                           { value: 'International Law', label: 'International Law' },
                           { value: 'Operational Patern', label: 'Operational Pattern' },
                         ]}

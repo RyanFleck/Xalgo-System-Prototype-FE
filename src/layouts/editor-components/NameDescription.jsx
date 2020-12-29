@@ -36,27 +36,27 @@ function NameDescription({ rule, updateRule, active }) {
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">Name & Description</Text>
         <Box padding={1} />
-          <FormStandard
-            name="Rule Name"
-            description={RuleSchema.metadata.rule.__title}
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setModified(true);
-            }}
-          />
-          <Box padding={1} />
-          <FormStandard
-            name="Rule Description"
-            description={RuleSchema.metadata.rule.__description}
-            value={desc}
-            onChange={(e) => {
-              setDesc(e.target.value);
-              setModified(true);
-            }}
-            longInput
-          />
-          {/*
+        <FormStandard
+          name="Rule Name"
+          description={RuleSchema.metadata.rule.__title}
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setModified(true);
+          }}
+        />
+        <Box padding={1} />
+        <FormStandard
+          name="Rule Description"
+          description={RuleSchema.metadata.rule.__description}
+          value={desc}
+          onChange={(e) => {
+            setDesc(e.target.value);
+            setModified(true);
+          }}
+          longInput
+        />
+        {/*
           <Box padding={1} />
           <Text>
             <b>Rule UUID:</b> {rule.path}

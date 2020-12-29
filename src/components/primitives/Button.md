@@ -13,7 +13,5 @@ Disabled buttons:
 Wide button
 
 ```jsx padded
-<Button variant="wide">
-  Click me
-</Button>
+<Button variant="wide">Click me</Button>
 ```

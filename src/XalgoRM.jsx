@@ -29,7 +29,12 @@ function XalgoRM() {
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        <Application user={user} username={username} token={credentials.token} authenticated={credentials.authenticated} />
+        <Application
+          user={user}
+          username={username}
+          token={credentials.token}
+          authenticated={credentials.authenticated}
+        />
       </Credentials.Provider>
       <ToastContainer
         position="top-center"

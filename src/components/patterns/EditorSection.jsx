@@ -29,7 +29,7 @@ function EditorSection({ title, destination }) {
           <div style={littlePadding} />
           <Flex alignItems="center">
             <Icon name="edit" />
-            <Box p={1}/>
+            <Box p={1} />
             <Text color="textb">{title}</Text>
           </Flex>
           <div style={littlePadding} />

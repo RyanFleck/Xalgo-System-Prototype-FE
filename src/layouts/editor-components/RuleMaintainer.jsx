@@ -17,10 +17,11 @@ function RuleMaintainer({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (name !== rule.metadata.rule.maintainers[0].name) setName(rule.metadata.rule.maintainers[0].name);
-    if (email !== rule.metadata.rule.maintainers[0].email) setEmail(rule.metadata.rule.maintainers[0].email);
+    if (name !== rule.metadata.rule.maintainers[0].name)
+      setName(rule.metadata.rule.maintainers[0].name);
+    if (email !== rule.metadata.rule.maintainers[0].email)
+      setEmail(rule.metadata.rule.maintainers[0].email);
   }
-
 
   /*function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
@@ -30,35 +31,32 @@ function RuleMaintainer({ rule, updateRule, active }) {
     setModified(false);
   }*/
 
-
-
-
-
   return (
     <div>
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">Rule Maintainer</Text>
         <Box p={1} />
         <IdDisplay message="Vqp4nv8eGprI" />
-              <Box padding={1} />
-              <FormStandard
-                name="Name"
-                description={RuleSchema.metadata.rule.maintainers[0].__name}
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  setModified(true);
-                }}
-              />
-              <Box padding={1} />
-              <FormStandard name="Email"
-                description={RuleSchema.metadata.rule.maintainers[0].__email}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setModified(true);
-                }}
-              />
+        <Box padding={1} />
+        <FormStandard
+          name="Name"
+          description={RuleSchema.metadata.rule.maintainers[0].__name}
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            setModified(true);
+          }}
+        />
+        <Box padding={1} />
+        <FormStandard
+          name="Email"
+          description={RuleSchema.metadata.rule.maintainers[0].__email}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setModified(true);
+          }}
+        />
       </Box>
     </div>
   );

@@ -14,7 +14,8 @@ import {
 export default function MetadataManagementSection({ rule, updateRule, active }) {
   // 0. Fill out the section name.
   const sectionName = 'Rule Metadata';
-  const sectionDesc = 'Provide additional information about the authors and entities associated with this rule.';
+  const sectionDesc =
+    'Provide additional information about the authors and entities associated with this rule.';
   const [modified, setModified] = useState(false);
 
   // 1. Set a state for each element that must be filled.

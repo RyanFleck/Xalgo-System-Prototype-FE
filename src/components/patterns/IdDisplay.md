@@ -1,3 +1,3 @@
 ```jsx
-<IdDisplay message="Vqp4nv8eGprI"/>
+<IdDisplay message="Vqp4nv8eGprI" />
 ```

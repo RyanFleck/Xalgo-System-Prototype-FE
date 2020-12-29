@@ -86,18 +86,20 @@ export default class InputOutput extends React.Component {
                 </Flex>
               </div>
               {inputSentences.map((val, key) => (
-                  <Box key={key}>
-                    <InputOutputRow rowValues={rowValues}/>
-                  </Box>
-                ))}
+                <Box key={key}>
+                  <InputOutputRow rowValues={rowValues} />
+                </Box>
+              ))}
               <Flex alignItems="center">
                 <div style={halfWidth}>
-                  <Addbutton onClick={() => {
-                    const parties = inputSentences;
-                    const last = parties[parties.length];
-                    parties.push(last + 1);
-                    this.setState({ inputSentences: parties });
-                  }}/>
+                  <Addbutton
+                    onClick={() => {
+                      const parties = inputSentences;
+                      const last = parties[parties.length];
+                      parties.push(last + 1);
+                      this.setState({ inputSentences: parties });
+                    }}
+                  />
                 </div>
                 <Box>
                   <Flex>
@@ -151,18 +153,20 @@ export default class InputOutput extends React.Component {
                 </Flex>
               </div>
               {outputSentences.map((val, key) => (
-                  <Box key={key}>
-                    <InputOutputRow rowValues={rowValues}/>
-                  </Box>
-                ))}
+                <Box key={key}>
+                  <InputOutputRow rowValues={rowValues} />
+                </Box>
+              ))}
               <Flex alignItems="center">
                 <div style={halfWidth}>
-                  <Addbutton onClick={() => {
-                    const parties = outputSentences;
-                    const last = parties[parties.length];
-                    parties.push(last + 1);
-                    this.setState({ outputSentences: parties });
-                  }}/>
+                  <Addbutton
+                    onClick={() => {
+                      const parties = outputSentences;
+                      const last = parties[parties.length];
+                      parties.push(last + 1);
+                      this.setState({ outputSentences: parties });
+                    }}
+                  />
                 </div>
                 <Box>
                   <Flex>

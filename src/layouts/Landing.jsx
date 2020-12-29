@@ -17,15 +17,13 @@ export default class Landing extends React.Component {
     this.state = {};
   }
 
-
   render() {
     const { user } = this.props;
     return (
       <ScrollUp>
         <Grid height="100vh" gridTemplateColumns="500px auto" m="0" p="0">
-          <Intro name={ user.email }/>
-          <Flex alignItems="center" justifyContent="center">
-          </Flex>
+          <Intro name={user.email} />
+          <Flex alignItems="center" justifyContent="center"></Flex>
         </Grid>
       </ScrollUp>
     );

@@ -3,7 +3,7 @@ import { RuleSchema } from 'xalgo-rule-processor';
 import { Box, FormStandard, Text } from '../../components';
 
 function StandardRoleName({ rule, updateRule, active }) {
-    // 0. Fill out the section name.
+  // 0. Fill out the section name.
   const sectionName = 'Standard Role Name';
   //const sectionDesc = 'Begin your rule by providing a title and concise description.';
   const [modified, setModified] = useState(false);
@@ -17,8 +17,10 @@ function StandardRoleName({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (code !== rule.input_filters.standard_role_name[0].isic_industry_code) setCode(rule.input_filters.standard_role_name[0].isic_industry_code);
-    if (name !== rule.input_filters.standard_role_name[0].isic_industry_name) setName(rule.input_filters.standard_role_name[0].isic_industry_name);
+    if (code !== rule.input_filters.standard_role_name[0].isic_industry_code)
+      setCode(rule.input_filters.standard_role_name[0].isic_industry_code);
+    if (name !== rule.input_filters.standard_role_name[0].isic_industry_name)
+      setName(rule.input_filters.standard_role_name[0].isic_industry_name);
   }
 
   /*

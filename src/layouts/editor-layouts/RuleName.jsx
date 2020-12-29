@@ -128,8 +128,9 @@ export default class RuleName extends React.Component {
               <Text variant="formtitle">Every rule begins with a name. </Text>
               <Box m={1} />
               <Text color="textb">
-                Use this space to give your rule a name. After that, describe in a simple factual way a summary of this rule, what data this rule requires, and what
-                assertions it will make.
+                Use this space to give your rule a name. After that, describe in a simple factual
+                way a summary of this rule, what data this rule requires, and what assertions it
+                will make.
               </Text>
               <Box m={2} />
               <Text>Rule Name</Text>

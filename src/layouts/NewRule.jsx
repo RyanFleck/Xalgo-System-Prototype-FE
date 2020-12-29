@@ -19,7 +19,7 @@ export default class NewRule extends React.Component {
     return (
       <ScrollUp>
         <Grid height="100vh" gridTemplateColumns="500px auto">
-          <Intro name={ user.email }/>
+          <Intro name={user.email} />
           <RuleName user={user} token={token} />
         </Grid>
       </ScrollUp>

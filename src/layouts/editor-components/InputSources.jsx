@@ -3,7 +3,7 @@ import { RuleSchema } from 'xalgo-rule-processor';
 import { Box, FormStandard, FormDropdown, Text } from '../../components';
 
 function InputSources({ rule, updateRule, active }) {
-    // 0. Fill out the section name.
+  // 0. Fill out the section name.
   const sectionName = 'Rule Information';
   //const sectionDesc = 'Begin your rule by providing a title and concise description.';
   const [modified] = useState(false);
@@ -32,11 +32,14 @@ function InputSources({ rule, updateRule, active }) {
           description="Not in Schema"
           options={[
             { value: 'is.xalgo', label: 'is.xalgo' },
-            { value: 'lookup.xalgo', label: 'lookup.xalgo' }
+            { value: 'lookup.xalgo', label: 'lookup.xalgo' },
           ]}
         />
         <Box padding={1} />
-        <FormStandard name="Unique Identifier" description={RuleSchema.metadata.rule.__description} />
+        <FormStandard
+          name="Unique Identifier"
+          description={RuleSchema.metadata.rule.__description}
+        />
       </Box>
     </div>
   );

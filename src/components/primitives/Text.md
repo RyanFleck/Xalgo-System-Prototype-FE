@@ -1,4 +1,5 @@
 Text treatments
+
 ```jsx
 <Text variant="heading">Heading</Text>
 <Text variant="subtitle">Subtitle</Text>

@@ -26,7 +26,7 @@ const heightcomp = {
   height: '18px',
   width: '12px',
   background: 'red',
-}
+};
 
 /**
  * Displays content parameters in the condensed sentence/view of the component.

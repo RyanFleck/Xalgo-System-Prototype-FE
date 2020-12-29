@@ -50,15 +50,15 @@ export default class Browse extends React.Component {
     }));
   }
 
-
-
   render() {
     return (
       <ScrollUp>
         <div style={fixpos}>
           <Box p={4} bg="#fff">
             <Flex>
-              <Button variant="invisible" onClick={this.handleModal}>Upload Table</Button>
+              <Button variant="invisible" onClick={this.handleModal}>
+                Upload Table
+              </Button>
             </Flex>
           </Box>
           <Rule />
@@ -78,7 +78,7 @@ export default class Browse extends React.Component {
                   <Flex justifyContent="space-between">
                     <Text variant="sectiontitle">Upload Table</Text>
                     <Button variant="invisible" onClick={this.closeModal}>
-                      <Icon name="ex"/>
+                      <Icon name="ex" />
                     </Button>
                   </Flex>
                   <Box p={1} />

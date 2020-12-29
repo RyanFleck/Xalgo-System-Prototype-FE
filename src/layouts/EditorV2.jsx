@@ -265,7 +265,11 @@ export default class EditorV2 extends React.Component {
               let body_enforced = this.enforceRuleJSONSchema(content_data.body);
 
               this.setState(
-                { rule_loaded: true, uuid: this.props.ruleUUID, primary_content_uuid: res.data.id },
+                {
+                  rule_loaded: true,
+                  uuid: this.props.ruleUUID,
+                  primary_content_uuid: res.data.id,
+                },
                 () => {
                   this.updateRule(body_enforced);
                 }

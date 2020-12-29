@@ -10,7 +10,7 @@ export default function Addbutton(props) {
         <Flex alignItems="center" justifyContent="flex-start">
           <Text color="text">{content || 'New Field'}</Text>
           <Box padding={1} />
-          <Icon name="add" fill="#A3D8BE"/>
+          <Icon name="add" fill="#A3D8BE" />
         </Flex>
       </Button>
       <Box padding={1} />

@@ -1,3 +1,3 @@
 ```jsx
-<ErrorMessage message="hello world"/>
+<ErrorMessage message="hello world" />
 ```

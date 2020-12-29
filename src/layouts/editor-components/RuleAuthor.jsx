@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RuleSchema } from 'xalgo-rule-processor';
-import { Box, FormStandard, IdDisplay, Text} from '../../components';
+import { Box, FormStandard, IdDisplay, Text } from '../../components';
 
 function RuleAuthor({ rule, updateRule, active }) {
   // 0. Fill out the section name.
@@ -18,9 +18,9 @@ function RuleAuthor({ rule, updateRule, active }) {
 
     // 2. Ensure each field is set according to the current rule state.
     if (name !== rule.metadata.rule.authors[0].name) setName(rule.metadata.rule.authors[0].name);
-    if (email !== rule.metadata.rule.authors[0].email) setEmail(rule.metadata.rule.authors[0].email);
+    if (email !== rule.metadata.rule.authors[0].email)
+      setEmail(rule.metadata.rule.authors[0].email);
   }
-
 
   function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
@@ -47,7 +47,8 @@ function RuleAuthor({ rule, updateRule, active }) {
           }}
         />
         <Box padding={1} />
-        <FormStandard name="Email"
+        <FormStandard
+          name="Email"
           description={RuleSchema.metadata.rule.authors[0].__email}
           value={email}
           onChange={(e) => {
@@ -57,7 +58,6 @@ function RuleAuthor({ rule, updateRule, active }) {
         />
       </Box>
     </div>
-
   );
 }
 

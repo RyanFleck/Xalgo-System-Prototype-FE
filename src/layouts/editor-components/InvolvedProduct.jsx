@@ -3,10 +3,10 @@ import { RuleSchema } from 'xalgo-rule-processor';
 import { Box, FormStandard, Text } from '../../components';
 
 function StandardRoleName({ rule, updateRule, active }) {
-    // 0. Fill out the section name.
+  // 0. Fill out the section name.
   const sectionName = 'Involved Product or Service';
   //const sectionDesc = 'Begin your rule by providing a title and concise description.';
-  const [modified, /*setModified*/] = useState(false);
+  const [modified /*setModified*/] = useState(false);
 
   // 1. Set a state for each element that must be filled.
   const [code, setCode] = useState('');
@@ -17,8 +17,10 @@ function StandardRoleName({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (code !== rule.input_filters.involved_product_service[0].unspsc_code) setCode(rule.input_filters.involved_product_service[0].unspsc_code);
-    if (name !== rule.input_filters.involved_product_service[0].unspsc_name) setName(rule.input_filters.involved_product_service[0].unspsc_name);
+    if (code !== rule.input_filters.involved_product_service[0].unspsc_code)
+      setCode(rule.input_filters.involved_product_service[0].unspsc_code);
+    if (name !== rule.input_filters.involved_product_service[0].unspsc_name)
+      setName(rule.input_filters.involved_product_service[0].unspsc_name);
   }
 
   /*

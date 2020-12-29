@@ -115,7 +115,6 @@ export default class OldEditor extends React.Component {
 
     return (
       <ScrollUp>
-
         <Router primary={false}>
           {/* Redirect to the editor page if the rule is partially complete. */}
           <RuleName path="/" rule={rule} updateRule={this.updateRule} />

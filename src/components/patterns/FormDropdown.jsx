@@ -27,9 +27,11 @@ function FormDropdown({ name, description, label, value, errormessage, options =
         </Button>
       </Flex>
       <Box padding={1} />
-      <Dropdown value={value} onChange={onChange} placeholder={""}>
+      <Dropdown value={value} onChange={onChange} placeholder={''}>
         {renderOptions()}
-        <option value="" disabled hidden>Select</option>
+        <option value="" disabled hidden>
+          Select
+        </option>
       </Dropdown>
 
       {errormessage ? (

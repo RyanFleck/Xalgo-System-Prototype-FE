@@ -1,3 +1,3 @@
 ```jsx
-<EditorSection title="Section Name"/>
+<EditorSection title="Section Name" />
 ```

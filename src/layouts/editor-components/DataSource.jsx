@@ -17,10 +17,11 @@ function DataSource({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (country !== rule.input_context.jurisdiction[0].country) setCountry(rule.input_context.jurisdiction[0].country);
-    if (subCountry !== rule.input_context.jurisdiction[0].subcountry) setSubCountry(rule.input_context.jurisdiction[0].subcountry);
+    if (country !== rule.input_context.jurisdiction[0].country)
+      setCountry(rule.input_context.jurisdiction[0].country);
+    if (subCountry !== rule.input_context.jurisdiction[0].subcountry)
+      setSubCountry(rule.input_context.jurisdiction[0].subcountry);
   }
-
 
   function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
@@ -45,7 +46,8 @@ function DataSource({ rule, updateRule, active }) {
           }}
         />
         <Box padding={1} />
-        <FormStandard name="Sub-country Jurisdiction"
+        <FormStandard
+          name="Sub-country Jurisdiction"
           description={RuleSchema.input_context.jurisdiction[0].__subcountry}
           value={subCountry}
           onChange={(e) => {
@@ -53,7 +55,6 @@ function DataSource({ rule, updateRule, active }) {
             setModified(true);
           }}
         />
-
       </Box>
     </div>
   );
