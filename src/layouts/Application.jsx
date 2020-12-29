@@ -35,11 +35,16 @@ const baseBoxStyle = {
 
 // Primary Component
 export default Application;
-function Application({ authenticated, user }) {
+function Application({ authenticated, user, credentials, setCredentials }) {
   return (
     <ScrollUp>
       <Theme>
-        <Navigation authenticated={authenticated} user={user} />
+        <Navigation
+          authenticated={authenticated}
+          credentials={credentials}
+          setCredentials={setCredentials}
+          user={user}
+        />
         <Box style={baseBoxStyle}>
           <Router primary={false}>
             <Landing path="/" authenticated={authenticated} user={user} />
@@ -47,7 +52,13 @@ function Application({ authenticated, user }) {
             <EditorV1 path="/editor/v1/:ruleUUID" authenticated={authenticated} user={user} />
             <EditorV2 path="/editor/:ruleUUID" authenticated={authenticated} user={user} />
             <NewRule path="/editor" authenticated={authenticated} user={user} />
-            <Login path="/login" authenticated={authenticated} user={user} />
+            <Login
+              path="/login"
+              authenticated={authenticated}
+              user={user}
+              credentials={credentials}
+              setCredentials={setCredentials}
+            />
             <Query path="/query" authenticated={authenticated} user={user} />
             <Dashboard path="/dashboard" authenticated={authenticated} user={user} />
           </Router>

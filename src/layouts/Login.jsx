@@ -1,14 +1,15 @@
 // libraries
-import React from 'react';
-import { Link } from '@reach/router';
+import React, { useState } from 'react';
+import { Redirect } from '@reach/router';
 import Box from '../components/layout/Box';
 import Grid from '../components/layout/Grid';
-import Button from '../components/primitives/Button';
+
 // rm-components
 import Text from '../components/primitives/Text';
 import ScrollUp from './components/ScrollUp';
 import Flex from '../components/layout/Flex';
 import Input from '../components/primitives/Input';
+import { getAccessToken, getRefreshToken, login } from '../utils/api';
 
 // style
 const inputHold = {
@@ -20,61 +21,89 @@ const widthHold = {
 };
 
 // Primary Component
-export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageDescription: 'Login to the Oughtomation Engine',
-    };
+function Login({ authenticated, credentials, setCredentials }) {
+  const [exceptions, setExceptions] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    // Bind functions
-    this.loginButtonOnClick = this.loginButtonOnClick.bind(this);
+  function onError(e) {
+    console.log('Login Error');
+    console.error(e);
+    setExceptions(e);
   }
 
-  loginButtonOnClick() {
-    const loggedIn = this.props.authenticated;
-    this.props.toggleAuth();
-    if (loggedIn) {
-      // User is logging out
-      this.props.navigate('/');
-    } else {
-      // User is logging in
-      this.props.navigate('/dashboard');
-    }
+  function onSuccess(e) {
+    console.log('Login Success');
+    console.log(e);
+
+    // Get new saved credentials.
+    const { token, expiry } = getAccessToken();
+    const { refreshToken, refreshTokenExpiry } = getRefreshToken();
+
+    // Update Credentials
+    const newCredentials = { ...credentials };
+    newCredentials.authenticated = true;
+    newCredentials.token = token;
+    newCredentials.tokenExpiry = expiry;
+    newCredentials.refreshToken = refreshToken;
+    newCredentials.refreshTokenExpiry = refreshTokenExpiry;
+    console.log('New Credentials:');
+    console.log(newCredentials);
+    setCredentials(newCredentials);
   }
 
-  render() {
-    return (
-      <ScrollUp>
-        <Grid gridTemplateColumns="50% 50%">
-          <div style={inputHold}>
-            <Flex alignItems="center" justifyContent="center">
-              <div style={widthHold}>
-                <Text variant="subtitle">Log In</Text>
-                <Box m={2} />
-                <Text>Email</Text>
+  function submit(e) {
+    e.preventDefault();
+    console.log('Attempting to log in...');
+    login('test1', 'RcfTec$88', onError, onSuccess);
+  }
+
+  return (
+    <ScrollUp>
+      <Grid gridTemplateColumns="50% 50%">
+        <div style={inputHold}>
+          <Flex alignItems="center" justifyContent="center">
+            <div style={widthHold}>
+              <Text variant="subtitle">Log In</Text>
+              <Box m={2} />
+              <Text>Username</Text>
+              <Box m={1} />
+              <form onSubmit={submit}>
+                <label>
+                  <Input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                  />
+                </label>
                 <Box m={1} />
-                <Input />
-                <Box m={2} />
-                <Text>Password</Text>
+                <label>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                  />
+                </label>
                 <Box m={1} />
-                <Input />
-                <Box m={3} />
-                <Link to="/dashboard">
-                  <Button variant="wide">Log In</Button>
-                </Link>
-                <Box m={3} />
-                <Flex justifyContent="space-between">
-                  <Text color="primary">Create Account</Text>
-                  <Text color="primary">Forgot Password</Text>
-                </Flex>
-              </div>
-              <div style={inputHold} />
-            </Flex>
-          </div>
-          <Box borderLeft="1px solid #efefef" />
-        </Grid>
-      </ScrollUp>
-    );
-  }
+                {exceptions ? <code id="form-errors">{exceptions}</code> : null}
+                <Box m={1} />
+                <label>
+                  <Input type="submit" value="Submit" />
+                </label>
+              </form>
+              <Box m={3} />
+              {exceptions ? <Text>{exceptions}</Text> : null}
+            </div>
+            <div style={inputHold} />
+          </Flex>
+        </div>
+        <Box borderLeft="1px solid #efefef" />
+      </Grid>
+      {authenticated ? <Redirect noThrow to="/dashboard" /> : null}
+    </ScrollUp>
+  );
 }
+
+export default Login;

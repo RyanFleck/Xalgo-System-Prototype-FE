@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Application from './layouts/Application';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Credentials } from './utils/api.js';
+import { Credentials, getAccessToken, getRefreshToken, isAuthenticated } from './utils/api.js';
 
 function XalgoRM() {
   const [credentials, setCredentials] = useState({
-    authenticated: false,
+    authenticated: null,
     token: '',
     tokenExpiry: null,
     refreshToken: '',
@@ -18,11 +18,31 @@ function XalgoRM() {
   const user = {};
 
   useEffect(() => {
-    if (!credentials.authenticated) {
-      const newCreds = { ...credentials };
-      newCreds.authenticated = true;
-      setCredentials(newCreds);
-      console.log(newCreds);
+    if (credentials.authenticated == null) {
+      // Get new saved credentials.
+      isAuthenticated().then((authenticated) => {
+        if (authenticated) {
+          console.log('User is still authenticated.');
+          const { token, expiry } = getAccessToken();
+          const { refreshToken, refreshTokenExpiry } = getRefreshToken();
+
+          // Update Credentials
+          const newCredentials = { ...credentials };
+          newCredentials.authenticated = true;
+          newCredentials.token = token;
+          newCredentials.tokenExpiry = expiry;
+          newCredentials.refreshToken = refreshToken;
+          newCredentials.refreshTokenExpiry = refreshTokenExpiry;
+          console.log('New Credentials:');
+          console.log(newCredentials);
+          setCredentials(newCredentials);
+        } else {
+          console.log('User is not authenticated.');
+          const newCredentials = { ...credentials };
+          newCredentials.authenticated = false;
+          setCredentials(newCredentials);
+        }
+      });
     }
   }, [credentials]);
 
@@ -34,6 +54,8 @@ function XalgoRM() {
           username={username}
           token={credentials.token}
           authenticated={credentials.authenticated}
+          credentials={credentials}
+          setCredentials={setCredentials}
         />
       </Credentials.Provider>
       <ToastContainer

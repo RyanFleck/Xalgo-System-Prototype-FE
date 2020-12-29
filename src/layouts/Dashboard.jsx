@@ -15,6 +15,7 @@ import Axios from 'axios';
 import BarLoader from 'react-spinners/BarLoader';
 import FileSaver from 'file-saver';
 import slugify from 'slugify';
+import { Redirect } from '@reach/router';
 
 const hold = {
   zIndex: '5',
@@ -138,6 +139,7 @@ export default class Dashboard extends React.Component {
             </Box>
           </Grid>
         </div>
+        {!this.props.authenticated ? <Redirect noThrow to="/" /> : null}
       </ScrollUp>
     );
   }

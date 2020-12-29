@@ -48,6 +48,7 @@ import { RuleSchema } from 'xalgo-rule-processor/dist/schema';
 import { objectEmpty } from 'xalgo-rule-processor/dist/utilities';
 
 import { downloadRule } from './Dashboard';
+import { Redirect } from '@reach/router';
 
 axiosRetry(Axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -851,6 +852,7 @@ export default class EditorV2 extends React.Component {
             </div>
           </div>
         )}
+        {!this.props.authenticated ? <Redirect noThrow to="/" /> : null}
       </div>
     );
   }

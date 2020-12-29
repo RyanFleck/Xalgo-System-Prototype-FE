@@ -20,7 +20,7 @@ const config = {
 // Build URLs
 // const registrationURL = `${backendUrl}/rest-auth/registration/`;
 const loginURL = `${backendUrl}/api/token/obtain/`;
-// const refreshURL = `${backendUrl}/api/token/refresh/`;
+const refreshURL = `${backendUrl}/api/token/refresh/`;
 
 // Context Object
 export const Credentials = createContext({
@@ -34,6 +34,40 @@ export const Credentials = createContext({
   setCredentials: (credentials) => {},
 });
 
+export function getAccessToken() {
+  const token = localStorage.getItem('token') || null;
+  const expiry = Date.parse(localStorage.getItem('token-expiry')) || null;
+  const data = {
+    token: token,
+    expiry: expiry,
+  };
+  return data;
+}
+
+export function getRefreshToken() {
+  const token = localStorage.getItem('refresh-token') || null;
+  const expiry = Date.parse(localStorage.getItem('refresh-token-expiry')) || null;
+
+  const data = {
+    refreshToken: token,
+    refreshTokenExpiry: expiry,
+  };
+  return data;
+}
+
+export function setNewAccessToken(token) {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 5);
+  localStorage.setItem('token', token);
+  localStorage.setItem('token-expiry', now);
+}
+
+export function setNewRefreshToken(token) {
+  const now = new Date(Date.now() + 12096e5); // Now + two weeks in ms.
+  localStorage.setItem('refresh-token', token);
+  localStorage.setItem('refresh-token-expiry', now);
+}
+
 export function login(username, password, errorMsgFunction, successFunction) {
   axios
     .post(
@@ -45,58 +79,80 @@ export function login(username, password, errorMsgFunction, successFunction) {
       config
     )
     .then((response) => {
-      successFunction(response);
+      console.log(response);
+      if (response.data && response.data.access !== null && response.data.refresh !== null) {
+        setNewAccessToken(response.data.access);
+        setNewRefreshToken(response.data.refresh);
+        successFunction(response);
+      } else {
+        throw new Error('Received an unexpected response from the server.');
+      }
     })
     .catch((error) => {
       errorMsgFunction(error);
     });
 }
+export function logout(afterFunction) {
+  localStorage.removeItem('token');
+  localStorage.removeItem('token-expiry');
+  localStorage.removeItem('refresh-token');
+  localStorage.removeItem('refresh-token-expiry');
+  afterFunction();
+}
 
-export function signUp(username, email, password1, password2, errorMsgFunction, successFunction) {
-  return false; // Disable this functionality for now.
-  /*
-  axios
-    .post(
-      registrationURL,
-      {
-        username: username,
-        email: email,
-        password1: password1,
-        password2: password2,
-      },
-      config
-    )
-    .then((response) => {
-      successFunction(response);
-    })
-    .catch((error) => {
-      errorMsgFunction(error);
-    });
-    */
+export async function isAuthenticated() {
+  // If the access token is valid, return true immediately.
+  if (isAccessTokenValid()){
+    console.log("Access token is still valid.");
+     return true;
+  }
+  // If the refresh token is valid, attempt to get a new access token.
+  if (isRefreshTokenValid()) {
+    console.log('Getting new access token using refresh token...');
+    const refreshToken = localStorage.getItem('refresh-token') || null;
+    if (refreshToken == null) return false; // Fail if no refresh token.
+    try {
+      const response = await axios.post(
+        refreshURL,
+        {
+          refresh: refreshToken,
+        },
+        config
+      );
+      // Response should contain new access token.
+      if (response.data.access) {
+        console.log('Success, got new access token.');
+        setNewAccessToken(response.data.access);
+        return true;
+      } else {
+        console.log('Failure, please log in again.');
+        throw new Error('No access token in refresh response.');
+      }
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+  // If neither of these operations is successful, return false.
+  return false;
 }
 
 export function isAccessTokenValid() {
-  const token = localStorage.getItem('token') || null;
-  const tokenExpiry = Date.parse(localStorage.getItem('token-expiry')) || null;
-  if (token == null || tokenExpiry == null) return false;
-  console.log(token);
-  console.log(tokenExpiry);
-  return false;
+  const { token, expiry } = getAccessToken();
+  if (token == null || expiry == null) return false;
+  return isExpiryDateValid(expiry);
 }
 
 export function isRefreshTokenValid() {
-  const refreshToken = localStorage.getItem('refresh-token') || null;
-  const refreshTokenExpiry = Date.parse(localStorage.getItem('refresh-token-expiry')) || null;
-  console.log(refreshToken);
-  console.log(refreshTokenExpiry);
-  return false;
+  const { refreshToken, refreshTokenExpiry } = getRefreshToken();
+  if (refreshToken == null || refreshTokenExpiry == null) return false;
+  return isExpiryDateValid(refreshTokenExpiry);
 }
 
 export function isExpiryDateValid(date) {
   if (date instanceof Date) {
     const now = new Date();
     return date.getTime() >= now.getTime();
-  } else {
-    throw new Error('A non-Date object was passed to the isExpiryDateValid function.');
   }
+  return false;
 }
