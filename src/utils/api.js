@@ -69,6 +69,7 @@ export function setNewRefreshToken(token) {
 }
 
 export function login(username, password, errorMsgFunction, successFunction) {
+  console.log(`POSTing login url: ${loginURL}`);
   axios
     .post(
       loginURL,
@@ -79,13 +80,15 @@ export function login(username, password, errorMsgFunction, successFunction) {
       config
     )
     .then((response) => {
+      console.log("Got response from backend:");
       console.log(response);
       if (response.data && response.data.access !== null && response.data.refresh !== null) {
         setNewAccessToken(response.data.access);
         setNewRefreshToken(response.data.refresh);
         successFunction(response);
       } else {
-        throw new Error('Received an unexpected response from the server.');
+        const msg = 'Received an unexpected response from the server.'
+        console.error(msg)
       }
     })
     .catch((error) => {

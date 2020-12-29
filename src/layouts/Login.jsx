@@ -29,7 +29,12 @@ function Login({ authenticated, credentials, setCredentials }) {
   function onError(e) {
     console.log('Login Error');
     console.error(e);
-    setExceptions(e);
+    console.log(Object.keys(e.response.data));
+    let msg = "";
+    Object.keys(e.response.data).forEach((key) => {
+      msg += "'" + key + "': " + e.response.data[key] + "\n";
+    })
+    setExceptions(msg);
   }
 
   function onSuccess(e) {
@@ -55,7 +60,7 @@ function Login({ authenticated, credentials, setCredentials }) {
   function submit(e) {
     e.preventDefault();
     console.log('Attempting to log in...');
-    login('test1', 'RcfTec$88', onError, onSuccess);
+    login(username, password, onError, onSuccess);
   }
 
   return (
@@ -93,8 +98,6 @@ function Login({ authenticated, credentials, setCredentials }) {
                   <Input type="submit" value="Submit" />
                 </label>
               </form>
-              <Box m={3} />
-              {exceptions ? <Text>{exceptions}</Text> : null}
             </div>
             <div style={inputHold} />
           </Flex>
