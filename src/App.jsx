@@ -12,45 +12,14 @@ if (!process.env.HEROKU) {
 }
 
 function App() {
-  const [username, setUsername] = useState(null);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [ready, setReady] = useState(false);
+  const username = 'Anon';
+  const user = {};
+  const token = 'none';
 
   useEffect(() => {
     setTimeout(() => {
-      Axios.get('/rest-auth/user')
-        .then((res) => {
-          setUser(res.data);
-          setUsername(res.data.username);
-          Axios.get('/apps/token/')
-            .then((res) => {
-              setToken(res.data.token);
-              setReady(true);
-            })
-            .catch((err) => {
-              if (err.response && err.response.hasOwnProperty('status')) {
-                const status = err.response.status;
-                if (status === 403) {
-                  console.log(`Failed to get token ${status}`);
-                } else {
-                  console.log(`Error while getting token: ${status}`);
-                }
-                setReady(true);
-              }
-            });
-        })
-        .catch((err) => {
-          if (err.response && err.response.hasOwnProperty('status')) {
-            const status = err.response.status;
-            if (status === 403) {
-              console.log(`Failed to authenticate user: ${status}`);
-            } else {
-              console.log(`Error while getting user info: ${status}`);
-            }
-            setReady(true);
-          }
-        });
+      setReady(true);
     }, 50);
   }, []);
 

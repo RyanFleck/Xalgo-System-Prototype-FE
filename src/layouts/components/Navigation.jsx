@@ -72,7 +72,7 @@ export default class Navigation extends React.Component {
         >
           <Box>
             <Flex alignItems="center">
-              <Link to="/apps/rm" style={styleNavlink}>
+              <Link to="/" style={styleNavlink}>
                 <Text variant="formtitle" marginLeft="8px" color="#fff">
                   XRM
                 </Text>
@@ -84,7 +84,7 @@ export default class Navigation extends React.Component {
           <Box justifySelf="end">
             <Flex>
               {authenticated ? (
-                <Link to="/apps/rm/editor" style={styleNavlink}>
+                <Link to="/editor" style={styleNavlink}>
                   <Flex alignItems="center">
                     <div style={svghold}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
@@ -106,7 +106,7 @@ export default class Navigation extends React.Component {
                 </Link>
               ) : null}
               {authenticated ? (
-                <Link to="/apps/rm/dashboard" style={styleNavlink}>
+                <Link to="/dashboard" style={styleNavlink}>
                   <Flex alignItems="center">
                     <div style={svghold}>
                       <Icon name="dash" fill="#fff" />

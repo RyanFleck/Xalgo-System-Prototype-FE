@@ -72,7 +72,7 @@ export default class Application extends React.Component {
         <Theme>
           <Navigation authenticated={authenticated} username={username} user={user} />
           <Box style={baseBoxStyle}>
-            <Router primary={false} basepath="/apps/rm">
+            <Router primary={false}>
               <Landing
                 path="/"
                 authenticated={authenticated}
