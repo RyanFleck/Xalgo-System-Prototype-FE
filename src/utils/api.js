@@ -87,6 +87,8 @@ export function isAccessTokenValid() {
 export function isRefreshTokenValid() {
   const refreshToken = localStorage.getItem('refresh-token') || null;
   const refreshTokenExpiry = Date.parse(localStorage.getItem('refresh-token-expiry')) || null;
+  console.log(refreshToken);
+  console.log(refreshTokenExpiry);
   return false;
 }
 
