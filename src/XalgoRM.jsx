@@ -49,7 +49,9 @@ function XalgoRM() {
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        {credentials.authenticated == null ? null : (
+        {credentials.authenticated == null ? (
+          <h1>{'Loading.'}</h1>
+        ) : (
           <Application
             user={user}
             username={username}
