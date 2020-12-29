@@ -49,14 +49,16 @@ function XalgoRM() {
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        <Application
-          user={user}
-          username={username}
-          token={credentials.token}
-          authenticated={credentials.authenticated}
-          credentials={credentials}
-          setCredentials={setCredentials}
-        />
+        {credentials.authenticated == null ? null : (
+          <Application
+            user={user}
+            username={username}
+            token={credentials.token}
+            authenticated={credentials.authenticated}
+            credentials={credentials}
+            setCredentials={setCredentials}
+          />
+        )}
       </Credentials.Provider>
       <ToastContainer
         position="top-center"

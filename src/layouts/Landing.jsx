@@ -9,6 +9,7 @@ import ScrollUp from './components/ScrollUp';
 // rm-components
 import Flex from '../components/layout/Flex';
 import Intro from './components/Intro';
+import { Redirect } from '@reach/router';
 
 // Primary Component
 export default class Landing extends React.Component {
@@ -23,8 +24,12 @@ export default class Landing extends React.Component {
       <ScrollUp>
         <Grid height="100vh" gridTemplateColumns="500px auto" m="0" p="0">
           <Intro name={user.email} />
-          <Flex alignItems="center" justifyContent="center"></Flex>
+          <Flex alignItems="center" justifyContent="center">
+            <h1>XalgoDevRM v0.4</h1>
+          </Flex>
         </Grid>
+        
+        {this.props.authenticated ? <Redirect noThrow to="/dashboard" /> : null}
       </ScrollUp>
     );
   }
