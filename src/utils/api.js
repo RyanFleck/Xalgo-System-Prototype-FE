@@ -140,26 +140,26 @@ export async function isAuthenticated() {
 export function isAccessTokenValid() {
   const { token, expiry } = getAccessToken();
   if (token == null || expiry == null) return false;
-  console.log("Access Token exists, checking expiry...");
+  console.log('Access Token exists, checking expiry...');
   return isExpiryDateValid(expiry);
 }
 
 export function isRefreshTokenValid() {
   const { refreshToken, refreshTokenExpiry } = getRefreshToken();
   if (refreshToken == null || refreshTokenExpiry == null) return false;
-  console.log("Refresh Token exists, checking expiry...");
+  console.log('Refresh Token exists, checking expiry...');
   return isExpiryDateValid(refreshTokenExpiry);
 }
 
 export function isExpiryDateValid(date) {
   const now = new Date();
   if (date instanceof Date) {
-    console.log("Date given as date object.");
+    console.log('Date given as date object.');
     return date.getTime() >= now.getTime();
-  }else if(typeof date === 'number'){
-    console.log("Date given as number.");
+  } else if (typeof date === 'number') {
+    console.log('Date given as number.');
     return date >= now.getTime();
   }
-  console.log("Provided date is invalid.");
+  console.log('Provided date is invalid.');
   return false;
 }

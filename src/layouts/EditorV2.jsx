@@ -235,7 +235,7 @@ export default class EditorV2 extends React.Component {
     // Wait 100ms to ensure rule can be pulled from DB.
     setTimeout(() => {
       console.log('Fetching rule from backend...');
-      
+
       // First axios request to get UUID for rule body.
       const { token } = getAccessToken();
       const backend = getBackendURL();

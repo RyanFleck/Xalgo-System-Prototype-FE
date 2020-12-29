@@ -28,7 +28,7 @@ export default class Landing extends React.Component {
             <h1>XalgoDevRM v0.4</h1>
           </Flex>
         </Grid>
-        
+
         {this.props.authenticated ? <Redirect noThrow to="/dashboard" /> : null}
       </ScrollUp>
     );
