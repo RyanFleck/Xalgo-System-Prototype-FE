@@ -13,9 +13,14 @@ const config = {
 
 // DO NOT USE AXIOS OUTSIDE OF THIS PAGE.
 
+// Token Info
+// Access Token expires after five minutes.
+// Refresh Token expires after 14 days.
+
 // Build URLs
-const registrationURL = `${backendUrl}/rest-auth/registration/`;
-const loginURL = `${backendUrl}/jwt-auth/token/obtain/`;
+// const registrationURL = `${backendUrl}/rest-auth/registration/`;
+const loginURL = `${backendUrl}/api/token/obtain/`;
+// const refreshURL = `${backendUrl}/api/token/refresh/`;
 
 // Context Object
 export const Credentials = createContext({
@@ -48,6 +53,8 @@ export function login(username, password, errorMsgFunction, successFunction) {
 }
 
 export function signUp(username, email, password1, password2, errorMsgFunction, successFunction) {
+  return false; // Disable this functionality for now.
+  /*
   axios
     .post(
       registrationURL,
@@ -65,4 +72,29 @@ export function signUp(username, email, password1, password2, errorMsgFunction, 
     .catch((error) => {
       errorMsgFunction(error);
     });
+    */
+}
+
+export function isAccessTokenValid() {
+  const token = localStorage.getItem('token') || null;
+  const tokenExpiry = Date.parse(localStorage.getItem('token-expiry')) || null;
+  if (token == null || tokenExpiry == null) return false;
+  console.log(token);
+  console.log(tokenExpiry);
+  return false;
+}
+
+export function isRefreshTokenValid() {
+  const refreshToken = localStorage.getItem('refresh-token') || null;
+  const refreshTokenExpiry = Date.parse(localStorage.getItem('refresh-token-expiry')) || null;
+  return false;
+}
+
+export function isExpiryDateValid(date) {
+  if (date instanceof Date) {
+    const now = new Date();
+    return date.getTime() >= now.getTime();
+  } else {
+    throw new Error('A non-Date object was passed to the isExpiryDateValid function.');
+  }
 }

@@ -34,6 +34,10 @@ const svghold = {
   paddingTop: '3px',
 };
 
+function logOut() {
+  console.log('Logging out...');
+}
+
 // Primary Component
 export default class Navigation extends React.Component {
   constructor(props) {
@@ -79,8 +83,7 @@ export default class Navigation extends React.Component {
               </Link>
             </Flex>
           </Box>
-          <Box>
-          </Box>
+          <Box></Box>
           <Box justifySelf="end">
             <Flex>
               {authenticated ? (
@@ -117,8 +120,8 @@ export default class Navigation extends React.Component {
               ) : null}
 
               <Flex alignItems="center">
-                <Button variant="invisible">
-                  <Text color="#fff">Log Out</Text>
+                <Button variant="invisible" onClick={logOut}>
+                  <Text color="#ff6e6e">Log Out</Text>
                 </Button>
               </Flex>
             </Flex>
