@@ -23,7 +23,7 @@ export const Dropdown = styled.select(
     MozAppearance: 'none',
     appearance: 'none' /* Remove default arrow */,
     background:
-      'url(https://raw.githubusercontent.com/RyanFleck/Xalgo-System-Prototype/master/xalgo_system_frontend/public/dropdown.svg) no-repeat right center',
+      'url(/dropdown.svg) no-repeat right center',
     '&:focus': {
       outline: 0,
       borderColor: 'primary',
