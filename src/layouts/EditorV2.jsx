@@ -49,6 +49,8 @@ import { objectEmpty } from 'xalgo-rule-processor/dist/utilities';
 
 import { downloadRule } from './Dashboard';
 import { Redirect } from '@reach/router';
+import { getAccessToken } from '../utils/api';
+import { getBackendURL } from '../utils/urls';
 
 axiosRetry(Axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -233,11 +235,13 @@ export default class EditorV2 extends React.Component {
     // Wait 100ms to ensure rule can be pulled from DB.
     setTimeout(() => {
       console.log('Fetching rule from backend...');
-
+      
       // First axios request to get UUID for rule body.
-      Axios.get(`/rules/rule/${this.props.ruleUUID}/`, {
+      const { token } = getAccessToken();
+      const backend = getBackendURL();
+      Axios.get(`${backend}/rules/rule/${this.props.ruleUUID}/`, {
         headers: {
-          'X-CSRFToken': this.props.token,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
@@ -245,9 +249,9 @@ export default class EditorV2 extends React.Component {
           rule_data = res.data;
           console.log(rule_data);
           // Second request to get rule body (stored as primary_content in rule)
-          Axios.get(`/rules/content/${rule_data.primary_content}/`, {
+          Axios.get(`${backend}/rules/content/${rule_data.primary_content}/`, {
             headers: {
-              'X-CSRFToken': this.props.token,
+              Authorization: `Bearer ${token}`,
             },
           })
             .then((res) => {
@@ -335,7 +339,7 @@ export default class EditorV2 extends React.Component {
     if (window.confirm(`Are you sure you'd like to RESET Rule ${this.state.uuid}?`)) {
       this.updateRule(deepCopy(emptyRule), true);
       toast.warning('Rule reset!');
-      this.props.navigate(`/apps/rm/editor/${this.state.uuid}`);
+      this.props.navigate(`/editor/${this.state.uuid}`);
     }
   }
 
@@ -352,14 +356,16 @@ export default class EditorV2 extends React.Component {
     console.log('Enforced body:');
     console.log(body_enforced);
     console.log('Running an AXIOS PATCH operation to update rule content...');
+    const { token } = getAccessToken();
+    const backend = getBackendURL();
     Axios.patch(
-      `/rules/content/${this.state.primary_content_uuid}/`,
+      `${backend}/rules/content/${this.state.primary_content_uuid}/`,
       {
         body: body_enforced,
       },
       {
         headers: {
-          'X-CSRFToken': this.props.token,
+          Authorization: `Bearer ${token}`,
         },
       }
     )

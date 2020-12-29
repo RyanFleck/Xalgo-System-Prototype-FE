@@ -102,9 +102,9 @@ export function logout(afterFunction) {
 
 export async function isAuthenticated() {
   // If the access token is valid, return true immediately.
-  if (isAccessTokenValid()){
-    console.log("Access token is still valid.");
-     return true;
+  if (isAccessTokenValid()) {
+    console.log('Access token is still valid.');
+    return true;
   }
   // If the refresh token is valid, attempt to get a new access token.
   if (isRefreshTokenValid()) {
@@ -140,19 +140,26 @@ export async function isAuthenticated() {
 export function isAccessTokenValid() {
   const { token, expiry } = getAccessToken();
   if (token == null || expiry == null) return false;
+  console.log("Access Token exists, checking expiry...");
   return isExpiryDateValid(expiry);
 }
 
 export function isRefreshTokenValid() {
   const { refreshToken, refreshTokenExpiry } = getRefreshToken();
   if (refreshToken == null || refreshTokenExpiry == null) return false;
+  console.log("Refresh Token exists, checking expiry...");
   return isExpiryDateValid(refreshTokenExpiry);
 }
 
 export function isExpiryDateValid(date) {
+  const now = new Date();
   if (date instanceof Date) {
-    const now = new Date();
+    console.log("Date given as date object.");
     return date.getTime() >= now.getTime();
+  }else if(typeof date === 'number'){
+    console.log("Date given as number.");
+    return date >= now.getTime();
   }
+  console.log("Provided date is invalid.");
   return false;
 }

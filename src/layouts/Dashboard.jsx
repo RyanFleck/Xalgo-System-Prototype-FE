@@ -16,17 +16,21 @@ import BarLoader from 'react-spinners/BarLoader';
 import FileSaver from 'file-saver';
 import slugify from 'slugify';
 import { Redirect } from '@reach/router';
+import { getAccessToken } from '../utils/api';
+import { getBackendURL } from '../utils/urls';
 
 const hold = {
   zIndex: '5',
 };
 
 export function downloadRule(uuid, csrfToken) {
+  const { token } = getAccessToken();
+  const backend = getBackendURL();
   let rule_name = 'rule';
   console.log(`Downloading ${uuid}`);
-  Axios.get(`/rules/json/${uuid}/`, {
+  Axios.get(`${backend}/rules/json/${uuid}/`, {
     headers: {
-      'X-CSRFToken': csrfToken,
+      Authorization: `Bearer ${token}`,
     },
   }).then((res) => {
     if (res && res.status && res.status === 200) {
@@ -43,10 +47,12 @@ export function downloadRule(uuid, csrfToken) {
 
 export function deleteRule(uuid, csrfToken) {
   console.log(`Deleting ${uuid} token ${this.props.token}`);
+  const { token } = getAccessToken();
+  const backend = getBackendURL();
   if (window.confirm(`Delete rule ${uuid}?`)) {
-    Axios.delete(`/rules/rule/${uuid}/`, {
+    Axios.delete(`${backend}/rules/rule/${uuid}/`, {
       headers: {
-        'X-CSRFToken': csrfToken,
+        Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
       if (res && res.status && res.status === 204) {
@@ -75,7 +81,10 @@ export default class Dashboard extends React.Component {
   }
 
   getRules() {
-    Axios.get('/rules/rule')
+    const { token } = getAccessToken();
+    const backend = getBackendURL();
+    console.log(`Using access token ${token}`);
+    Axios.get(`${backend}/rules/rule`, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         const rules = res.data.sort((a, b) => {
           let date_a = Date.parse(a.modified);
@@ -91,10 +100,13 @@ export default class Dashboard extends React.Component {
       })
       .catch((err) => {
         const status = err.response.status;
+        console.log(err.response.data);
         if (status === 403) {
           console.log(`Failed to authenticate user: ${status}`);
+          console.error(err);
         } else {
           console.log(`Error while getting user info: ${status}`);
+          console.error(err);
         }
       });
   }
@@ -119,7 +131,7 @@ export default class Dashboard extends React.Component {
                             key={i}
                             uuid={e.id}
                             name={e.name}
-                            editLink={`/apps/rm/editor/${e.id}`}
+                            editLink={`/editor/${e.id}`}
                             deleteRule={deleteRule}
                             downloadRule={downloadRule}
                             csrfToken={this.props.token}

@@ -17,6 +17,8 @@ import { generateNewRule } from 'xalgo-rule-processor/dist/rule';
 import axiosRetry from 'axios-retry';
 import { enforceSchemaWithTables } from 'xalgo-rule-processor/dist/processing';
 import { RuleSchema } from 'xalgo-rule-processor/dist/schema';
+import { getAccessToken } from '../../utils/api';
+import { getBackendURL } from '../../utils/urls';
 
 axiosRetry(Axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -62,15 +64,17 @@ export default class RuleName extends React.Component {
     if (this.state.name && this.state.description) {
       console.log(`Name: ${this.state.name}\nDesc: ${this.state.description}`);
       console.log(`Got token: ${this.props.token}`);
+      const { token } = getAccessToken();
+      const backend = getBackendURL();
       Axios.post(
-        '/rules/rule/',
+        `${backend}/rules/rule/`,
         {
           name: this.state.name,
           description: this.state.description,
         },
         {
           headers: {
-            'X-CSRFToken': this.props.token,
+            Authorization: `Bearer ${token}`,
           },
         }
       ).then((res) => {
@@ -90,14 +94,16 @@ export default class RuleName extends React.Component {
             body_enforced = body;
           }
           toast(msg);
+          const { token } = getAccessToken();
+          const backend = getBackendURL();
           Axios.patch(
-            `/rules/content/${res.data.primary_content}/`,
+            `${backend}/rules/content/${res.data.primary_content}/`,
             {
               body: body_enforced,
             },
             {
               headers: {
-                'X-CSRFToken': this.props.token,
+                Authorization: `Bearer ${token}`,
               },
             }
           ).then((res) => {
@@ -105,7 +111,7 @@ export default class RuleName extends React.Component {
               const msg = `Created rule content version with id ${res.data.id}`;
               console.log(res.data);
               toast(msg);
-              navigate(`/apps/rm/dashboard/`);
+              navigate(`/dashboard`);
             } else {
               toast.error('Failed to create rule content.');
             }

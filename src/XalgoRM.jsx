@@ -33,7 +33,7 @@ function XalgoRM() {
           newCredentials.tokenExpiry = expiry;
           newCredentials.refreshToken = refreshToken;
           newCredentials.refreshTokenExpiry = refreshTokenExpiry;
-          console.log('New Credentials:');
+          console.log('Credentials:');
           console.log(newCredentials);
           setCredentials(newCredentials);
         } else {
