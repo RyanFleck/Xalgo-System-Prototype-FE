@@ -30,10 +30,10 @@ function Login({ authenticated, credentials, setCredentials }) {
     console.log('Login Error');
     console.error(e);
     console.log(Object.keys(e.response.data));
-    let msg = "";
+    let msg = '';
     Object.keys(e.response.data).forEach((key) => {
-      msg += "'" + key + "': " + e.response.data[key] + "\n";
-    })
+      msg += "'" + key + "': " + e.response.data[key] + '\n';
+    });
     setExceptions(msg);
   }
 

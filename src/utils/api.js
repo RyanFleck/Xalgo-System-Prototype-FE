@@ -80,15 +80,15 @@ export function login(username, password, errorMsgFunction, successFunction) {
       config
     )
     .then((response) => {
-      console.log("Got response from backend:");
+      console.log('Got response from backend:');
       console.log(response);
       if (response.data && response.data.access !== null && response.data.refresh !== null) {
         setNewAccessToken(response.data.access);
         setNewRefreshToken(response.data.refresh);
         successFunction(response);
       } else {
-        const msg = 'Received an unexpected response from the server.'
-        console.error(msg)
+        const msg = 'Received an unexpected response from the server.';
+        console.error(msg);
       }
     })
     .catch((error) => {
