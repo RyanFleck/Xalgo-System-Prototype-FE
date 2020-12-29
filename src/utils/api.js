@@ -17,13 +17,10 @@ const config = {
 const registrationURL = `${backendUrl}/rest-auth/registration/`;
 const loginURL = `${backendUrl}/jwt-auth/token/obtain/`;
 
-// Context Objects
-export const Authenticated = createContext({
-  authenticated: false,
-  setAuthenticated: (auth) => {},
-});
+// Context Object
 export const Credentials = createContext({
   credentials: {
+    authenticated: false,
     token: '',
     tokenExpiry: null,
     refreshToken: '',

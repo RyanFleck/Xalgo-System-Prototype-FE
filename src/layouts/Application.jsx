@@ -34,138 +34,26 @@ const baseBoxStyle = {
 };
 
 // Primary Component
-export default class Application extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      authenticated: true,
-      userInfo: {
-        name: 'Aaron Anon',
-        solidUsername: 'https://anon.solid.community/profile/card#me',
-      },
-      userRules: [
-        {
-          name: 'Quebec Gas Station Tax',
-          path: 'anon.gas-tax',
-        },
-        {
-          name: 'Singapore Property Tax',
-          path: 'anon.property-tax-sg',
-        },
-      ],
-    };
-
-    // Bind functions
-    this.toggleLoggedin = this.toggleLoggedin.bind(this);
-  }
-
-  toggleLoggedin() {
-    const { authenticated } = this.state;
-    this.setState({ authenticated: !authenticated });
-  }
-
-  render() {
-    const { username, user, token, refresh } = this.props;
-    const { authenticated, userRules, userInfo } = this.state;
-    return (
-      <ScrollUp>
-        <Theme>
-          <Navigation authenticated={authenticated} username={username} user={user} />
-          <Box style={baseBoxStyle}>
-            <Router primary={false}>
-              <Landing
-                path="/"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <Browse
-                path="/browse"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <EditorV1
-                path="/editor/v1/:ruleUUID"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <EditorV2
-                path="/editor/:ruleUUID"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <NewRule
-                path="/editor"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <Login
-                path="/login"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <Query
-                path="/query"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-              <Dashboard
-                path="/dashboard"
-                authenticated={authenticated}
-                userRules={userRules}
-                userInfo={userInfo}
-                toggleAuth={this.toggleLoggedin}
-                username={username}
-                user={user}
-                token={token}
-                refresh={refresh}
-              />
-            </Router>
-          </Box>
-          <Footer />
-        </Theme>
-      </ScrollUp>
-    );
-  }
+export default Application;
+function Application({ authenticated, user }) {
+  return (
+    <ScrollUp>
+      <Theme>
+        <Navigation authenticated={authenticated} user={user} />
+        <Box style={baseBoxStyle}>
+          <Router primary={false}>
+            <Landing path="/" authenticated={authenticated} user={user} />
+            <Browse path="/browse" authenticated={authenticated} user={user} />
+            <EditorV1 path="/editor/v1/:ruleUUID" authenticated={authenticated} user={user} />
+            <EditorV2 path="/editor/:ruleUUID" authenticated={authenticated} user={user} />
+            <NewRule path="/editor" authenticated={authenticated} user={user} />
+            <Login path="/login" authenticated={authenticated} user={user} />
+            <Query path="/query" authenticated={authenticated} user={user} />
+            <Dashboard path="/dashboard" authenticated={authenticated} user={user} />
+          </Router>
+        </Box>
+        <Footer />
+      </Theme>
+    </ScrollUp>
+  );
 }
