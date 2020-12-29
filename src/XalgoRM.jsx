@@ -3,7 +3,6 @@ import Application from './layouts/Application';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Credentials } from './utils/api.js';
-import { deepCopy } from 'xalgo-rule-processor/dist/utilities';
 
 function XalgoRM() {
   const [credentials, setCredentials] = useState({
@@ -13,24 +12,24 @@ function XalgoRM() {
     refreshToken: '',
     refreshTokenExpiry: null,
   });
+
+  // We can get user data on login.
   const username = 'Anon';
   const user = {};
-  const token = 'none';
 
   useEffect(() => {
     if (!credentials.authenticated) {
-      const newCreds = deepCopy(credentials);
+      const newCreds = { ...credentials };
       newCreds.authenticated = true;
       setCredentials(newCreds);
-
-      console.log(credentials);
+      console.log(newCreds);
     }
   }, [credentials]);
 
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        <Application user={user} username={username} token={token} />
+        <Application user={user} username={username} token={credentials.token} authenticated={credentials.authenticated} />
       </Credentials.Provider>
       <ToastContainer
         position="top-center"
