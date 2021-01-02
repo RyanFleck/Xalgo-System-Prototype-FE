@@ -36,9 +36,6 @@ function XalgoRM() {
       });
     }
     if (credentials.authenticated === null) {
-      const falseCredentials = { ...credentials };
-      falseCredentials.authenticated = false;
-      setCredentials(falseCredentials);
       // Get new saved credentials.
       isAuthenticated().then((authenticated) => {
         if (authenticated) {
@@ -69,7 +66,7 @@ function XalgoRM() {
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        {credentials.authenticated == null ? (
+        {(credentials.authenticated === null || backendUp !== true) ? (
           <div id="loading-box">
             <h1>{'LOADING'}</h1>
             <ClockLoader size={100} />
