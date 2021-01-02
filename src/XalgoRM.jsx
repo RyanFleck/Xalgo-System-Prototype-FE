@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Application from './layouts/Application';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-day-picker/lib/style.css';
 import {
   Credentials,
   getAccessToken,

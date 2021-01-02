@@ -16,14 +16,19 @@ import BarLoader from 'react-spinners/BarLoader';
 import FileSaver from 'file-saver';
 import slugify from 'slugify';
 import { Redirect } from '@reach/router';
-import { getAccessToken } from '../utils/api';
+import { getAccessToken, preRequestRefreshAuth } from '../utils/api';
 import { getBackendURL } from '../utils/urls';
+import { toast } from 'react-toastify';
 
 const hold = {
   zIndex: '5',
 };
 
 export function downloadRule(uuid, csrfToken) {
+  if (!preRequestRefreshAuth()) {
+    toast.error('Credentials expired, Please log in again.');
+    return false;
+  }
   const { token } = getAccessToken();
   const backend = getBackendURL();
   let rule_name = 'rule';

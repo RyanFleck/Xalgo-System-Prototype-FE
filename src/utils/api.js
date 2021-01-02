@@ -119,6 +119,12 @@ export function logout(afterFunction) {
   afterFunction();
 }
 
+export async function preRequestRefreshAuth() {
+  isAuthenticated().then((result) => {
+    return result;
+  });
+}
+
 export async function isAuthenticated() {
   // If the access token is valid, return true immediately.
   if (isAccessTokenValid()) {

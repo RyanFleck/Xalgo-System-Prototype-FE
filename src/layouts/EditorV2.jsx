@@ -26,7 +26,7 @@ import {
   Text,
 } from '../components';
 import ColumnLabel from '../components/patterns/ColumnLabel';
-import { getAccessToken, isAuthenticated } from '../utils/api';
+import { getAccessToken, preRequestRefreshAuth } from '../utils/api';
 import { getBackendURL } from '../utils/urls';
 import { downloadRule } from './Dashboard';
 import {
@@ -243,7 +243,7 @@ export default class EditorV2 extends React.Component {
     // Wait 100ms to ensure rule can be pulled from DB.
     setTimeout(() => {
       console.log('Fetching rule from backend...');
-      if (!isAuthenticated()) {
+      if (!preRequestRefreshAuth()) {
         toast.error('Credentials expired, Please log in again.');
         return false;
       }
@@ -368,7 +368,7 @@ export default class EditorV2 extends React.Component {
     console.log('Enforced body:');
     console.log(body_enforced);
     console.log('Running an AXIOS PATCH operation to update rule content...');
-    if (!isAuthenticated()) {
+    if (!preRequestRefreshAuth()) {
       toast.error('Credentials expired, Please log in again.');
       return false;
     }
@@ -631,8 +631,8 @@ export default class EditorV2 extends React.Component {
                         }}
                       />
                     </div>
-                    <Time label="Start Time" />
-                    <Time label="End Time" />
+                    <Time label="Start Time" start/>
+                    <Time label="End Time" end/>
                   </Grid>
 
                   {/* ================================================================ */}

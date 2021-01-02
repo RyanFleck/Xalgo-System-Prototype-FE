@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { RuleSchema } from 'xalgo-rule-processor';
-import { Box, FormStandard, Flex, Dropdown, Text, FormDropdown } from '../../components';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { Box, Flex, Dropdown, Text, FormDropdown } from '../../components';
 
-function Time({ rule, updateRule, active, section, label }) {
+function Time({ rule, updateRule, active, section, label, start=false, end=false }) {
   // 0. Fill out the section name.
   const sectionName = 'Rule Information';
   // const sectionDesc = 'Begin your rule by providing a title and concise description.';
@@ -27,11 +28,11 @@ function Time({ rule, updateRule, active, section, label }) {
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">{label}</Text>
         <Box padding={1} />
-        <FormStandard name="Date" description={RuleSchema.metadata.rule.__description} />
+        <DayPickerInput />
         <Box padding={1} />
         <Flex alignItems="center">
           <Dropdown>
-            <option>Hour</option>
+            <option hidden>Hour</option>
             <option>00</option>
             <option>01</option>
             <option>02</option>
@@ -59,7 +60,7 @@ function Time({ rule, updateRule, active, section, label }) {
           </Dropdown>
           <Box padding={1} />
           <Dropdown>
-            <option>Minute</option>
+            <option hidden>Minute</option>
             <option>00</option>
             <option>01</option>
             <option>02</option>
@@ -123,7 +124,7 @@ function Time({ rule, updateRule, active, section, label }) {
           </Dropdown>
           <Box padding={1} />
           <Dropdown>
-            <option>Second</option>
+            <option hidden>Second</option>
             <option>00</option>
             <option>01</option>
             <option>02</option>
