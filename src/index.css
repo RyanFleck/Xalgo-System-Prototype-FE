@@ -82,3 +82,9 @@ a {
   height: 90vh;
   width: 100%;
 }
+
+#loading-box p,
+#loading-box h1 {
+  padding: 0;
+  margin: 0.1em;
+}

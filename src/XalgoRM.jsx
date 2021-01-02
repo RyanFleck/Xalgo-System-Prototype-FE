@@ -66,9 +66,12 @@ function XalgoRM() {
   return (
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
-        {(credentials.authenticated === null || backendUp !== true) ? (
+        {credentials.authenticated === null || backendUp !== true ? (
           <div id="loading-box">
             <h1>{'LOADING'}</h1>
+            <p>Authenticated: {credentials.authenticated ? 'Yes' : 'No'}</p>
+            <p>Backend Up: {backendUp ? 'Ready' : 'Waiting'}</p>
+            <br />
             <ClockLoader size={100} />
           </div>
         ) : (
