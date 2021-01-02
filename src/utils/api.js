@@ -3,7 +3,7 @@ import axiosRetry from 'axios-retry';
 import { createContext } from 'react';
 import { getBackendURL } from './urls';
 
-axiosRetry(axios, { retries: 3 });
+axiosRetry(axios, { retries: 5 });
 const backendUrl = getBackendURL();
 const config = {
   headers: {
@@ -21,6 +21,7 @@ const config = {
 // const registrationURL = `${backendUrl}/rest-auth/registration/`;
 const loginURL = `${backendUrl}/api/token/obtain/`;
 const refreshURL = `${backendUrl}/api/token/refresh/`;
+const awakeURL = `${backendUrl}/api/awake/`;
 
 // Context Object
 export const Credentials = createContext({
@@ -66,6 +67,21 @@ export function setNewRefreshToken(token) {
   const now = new Date(Date.now() + 12096e5); // Now + two weeks in ms.
   localStorage.setItem('refresh-token', token);
   localStorage.setItem('refresh-token-expiry', now);
+}
+
+export function wakeUpBackend(successFunction) {
+  axios
+    .get(awakeURL, config)
+    .then((response) => {
+      if (response.status === 200) {
+        successFunction();
+      } else {
+        console.error('Backend returned an invalid code.');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 export function login(username, password, errorMsgFunction, successFunction) {

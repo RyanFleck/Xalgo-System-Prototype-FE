@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Application from './layouts/Application';
-import { ToastContainer, Slide } from 'react-toastify';
+import { ToastContainer, Slide, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Credentials, getAccessToken, getRefreshToken, isAuthenticated } from './utils/api.js';
+import {
+  Credentials,
+  getAccessToken,
+  getRefreshToken,
+  isAuthenticated,
+  wakeUpBackend,
+} from './utils/api.js';
 
 function XalgoRM() {
+  const [backendUp, setBackendUp] = useState(null);
   const [credentials, setCredentials] = useState({
     authenticated: null,
     token: '',
@@ -18,7 +25,19 @@ function XalgoRM() {
   const user = {};
 
   useEffect(() => {
-    if (credentials.authenticated == null) {
+    if (backendUp === null) {
+      setBackendUp(false);
+      console.log('Attempting to wake up backend...');
+      wakeUpBackend(() => {
+        console.log('Backed is up.');
+        setBackendUp(true);
+        toast('Backend is connected!');
+      });
+    }
+    if (credentials.authenticated === null) {
+      const falseCredentials = { ...credentials };
+      falseCredentials.authenticated = false;
+      setCredentials(falseCredentials);
       // Get new saved credentials.
       isAuthenticated().then((authenticated) => {
         if (authenticated) {
@@ -44,7 +63,7 @@ function XalgoRM() {
         }
       });
     }
-  }, [credentials]);
+  }, [credentials, backendUp]);
 
   return (
     <div className="XalgoRM">
