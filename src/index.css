@@ -73,3 +73,12 @@ a {
 ::-webkit-scrollbar-thumb {
   background: rgb(143, 143, 143);
 }
+
+#loading-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  width: 100%;
+}

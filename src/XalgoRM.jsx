@@ -9,6 +9,7 @@ import {
   isAuthenticated,
   wakeUpBackend,
 } from './utils/api.js';
+import { ClockLoader } from 'react-spinners';
 
 function XalgoRM() {
   const [backendUp, setBackendUp] = useState(null);
@@ -69,7 +70,10 @@ function XalgoRM() {
     <div className="XalgoRM">
       <Credentials.Provider value={{ credentials, setCredentials }}>
         {credentials.authenticated == null ? (
-          <h1>{'Loading.'}</h1>
+          <div id="loading-box">
+            <h1>{'LOADING'}</h1>
+            <ClockLoader size={100} />
+          </div>
         ) : (
           <Application
             user={user}
