@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { RuleSchema } from 'xalgo-rule-processor';
-import { Box, FormStandard, Text } from '../../components';
+import { RuleSchema, deepCopy } from 'xalgo-rule-processor';
+import { Box, Button, FormStandard, Text, Flex } from '../../components';
 
-function DataSource({ rule, updateRule, active }) {
-  // 0. Fill out the section name.
+function DataSource({ rule, updateRule, active, indice }) {
+  // indice. Fill out the section name.
   const sectionName = 'Rule Maintainer';
   //const sectionDesc = 'Begin your rule by providing a title and concise description.';
   const [modified, setModified] = useState(false);
@@ -17,24 +17,42 @@ function DataSource({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (country !== rule.input_context.jurisdiction[0].country)
-      setCountry(rule.input_context.jurisdiction[0].country);
-    if (subCountry !== rule.input_context.jurisdiction[0].subcountry)
-      setSubCountry(rule.input_context.jurisdiction[0].subcountry);
+    if (country !== rule.input_context.jurisdiction[indice].country)
+      setCountry(rule.input_context.jurisdiction[indice].country);
+    if (subCountry !== rule.input_context.jurisdiction[indice].subcountry)
+      setSubCountry(rule.input_context.jurisdiction[indice].subcountry);
+  }
+
+  function deleteJurisdiction(i) {
+    const updatedRule = deepCopy(rule);
+    updatedRule.input_context.jurisdiction.splice(i, 1);
+    updateRule(updatedRule);
   }
 
   function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
-    rule.input_context.jurisdiction[0].country = country;
-    rule.input_context.jurisdiction[0].subcountry = subCountry;
-    updateRule(rule);
+    const updatedRule = deepCopy(rule);
+    updatedRule.input_context.jurisdiction[indice].country = country;
+    updatedRule.input_context.jurisdiction[indice].subcountry = subCountry;
+    updateRule(updatedRule);
     setModified(false);
   }
 
   return (
     <div onMouseLeave={saveContent}>
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
-        <Text variant="formtitle">Jurisdiction</Text>
+        <Flex>
+          <Text variant="formtitle">Jurisdiction</Text>{' '}
+          <Button
+            variant="invisible"
+            color="red"
+            onClick={() => {
+              deleteJurisdiction(indice);
+            }}
+          >
+            <Text color="#ff6e6e">&nbsp;{'x'}</Text>
+          </Button>
+        </Flex>
         <Box p={1} />
         <FormStandard
           name="Country Jurisdiction"
@@ -56,6 +74,7 @@ function DataSource({ rule, updateRule, active }) {
           }}
         />
       </Box>
+      <Box padding={1} />
     </div>
   );
 }

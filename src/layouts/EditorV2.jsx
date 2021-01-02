@@ -33,7 +33,6 @@ import {
   BlankRows,
   DataSource,
   Entity,
-  InputSources,
   InvolvedProduct,
   Metadata,
   NameDescription,
@@ -179,6 +178,7 @@ export default class EditorV2 extends React.Component {
 
     this.handleCollapse = this.handleCollapse.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
+    this.addJurisdiction = this.addJurisdiction.bind(this);
 
     this.keyHandlers = {
       SAVE: (e) => {
@@ -425,6 +425,13 @@ export default class EditorV2 extends React.Component {
     this.updateRule(addNewCase(this.state.rule), true);
   }
 
+  addJurisdiction() {
+    console.log('EditorV2::addJurisdiction()');
+    const rule = deepCopy(this.state.rule);
+    rule.input_context.jurisdiction.push({});
+    this.updateRule(rule, true);
+  }
+
   /**
    * ==================================
    * Rendering Method, end of functions
@@ -589,8 +596,11 @@ export default class EditorV2 extends React.Component {
                   <Box p={2}></Box>
                   <Grid gridTemplateColumns="33% 33% 33%" gridGap="2em">
                     <div>
+                      <Text>Currently only is.xa documents are supported.</Text>
+                      {/* 
                       <InputSources />
                       <Addbutton content="Input Source" />
+                      */}
                     </div>
                   </Grid>
 
@@ -607,8 +617,19 @@ export default class EditorV2 extends React.Component {
                   <Box p={2}></Box>
                   <Grid gridTemplateColumns="33% 33% 33%" gridGap="2em">
                     <div>
-                      <DataSource rule={rule} updateRule={this.updateRule} active={active} />
-                      <Addbutton content="Jurisdiction" />
+                      {/* This is the Jurisdiction editor. */}
+                      {rule.input_context.jurisdiction.map((val, index) => {
+                        return (
+                          <DataSource key={index} rule={rule} updateRule={this.updateRule} active={active} indice={index} />
+                        );
+                      })}
+                      <Addbutton
+                        content="Jurisdiction"
+                        onClick={() => {
+                          console.log('Adding jurisdiction...');
+                          this.addJurisdiction();
+                        }}
+                      />
                     </div>
                     <Time label="Start Time" />
                     <Time label="End Time" />
