@@ -35,7 +35,7 @@ function RuleManager({ rule, updateRule, active }) {
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">Rule Manager</Text>
         <Box p={1} />
-        <IdDisplay message="Vqp4nv8eGprI" />
+        <IdDisplay message={rule.metadata.rule.manager[0].id || "Unregistered User "} />
         <Box padding={1} />
         <FormStandard
           name="Name"
@@ -51,6 +51,7 @@ function RuleManager({ rule, updateRule, active }) {
           name="Email"
           description={RuleSchema.metadata.rule.manager[0].__email}
           value={email}
+          type="email"
           onChange={(e) => {
             setEmail(e.target.value);
             setModified(true);

@@ -2,7 +2,6 @@ import { Redirect } from '@reach/router';
 import Axios from 'axios';
 import axiosRetry from 'axios-retry';
 import React from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { ClockLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import {
@@ -27,7 +26,7 @@ import {
   Text,
 } from '../components';
 import ColumnLabel from '../components/patterns/ColumnLabel';
-import { getAccessToken } from '../utils/api';
+import { getAccessToken, isAuthenticated } from '../utils/api';
 import { getBackendURL } from '../utils/urls';
 import { downloadRule } from './Dashboard';
 import {
@@ -129,9 +128,11 @@ const topguide = {
   zIndex: '1',
 };
 
+/*
 const keyMap = {
   SAVE: ['command+s', 'command+S', 'Control+s', 'Control+S'],
 };
+*/
 
 // This empty rule is the schema without any __descriptions.
 // Temporarily start with three cases.
@@ -242,6 +243,10 @@ export default class EditorV2 extends React.Component {
     // Wait 100ms to ensure rule can be pulled from DB.
     setTimeout(() => {
       console.log('Fetching rule from backend...');
+      if (!isAuthenticated()) {
+        toast.error('Credentials expired, Please log in again.');
+        return false;
+      }
 
       // First axios request to get UUID for rule body.
       const { token } = getAccessToken();
@@ -363,6 +368,10 @@ export default class EditorV2 extends React.Component {
     console.log('Enforced body:');
     console.log(body_enforced);
     console.log('Running an AXIOS PATCH operation to update rule content...');
+    if (!isAuthenticated()) {
+      toast.error('Credentials expired, Please log in again.');
+      return false;
+    }
     const { token } = getAccessToken();
     const backend = getBackendURL();
     Axios.patch(
@@ -542,7 +551,6 @@ export default class EditorV2 extends React.Component {
                     </Box>
                     <Box gridArea="2 / 2 / 3 / 3">
                       <Entity rule={rule} updateRule={this.updateRule} active={active} />
-                      <Addbutton content="Rule Maintainer" />
                     </Box>
                   </Grid>
 
@@ -559,18 +567,17 @@ export default class EditorV2 extends React.Component {
                   <Grid gridTemplateColumns="33% 33% 33%" gridGap="2em">
                     <div>
                       <RuleManager rule={rule} updateRule={this.updateRule} active={active} />
-                      <Addbutton content="Rule Manager" />
+                      {/* <Addbutton content="Rule Manager" /> */}
                     </div>
                     <div>
                       <RuleAuthor rule={rule} updateRule={this.updateRule} active={active} />
-                      <Addbutton content="Rule Author" />
+                      {/* <Addbutton content="Rule Author" /> */}
                     </div>
                     <div>
                       <RuleMaintainer rule={rule} updateRule={this.updateRule} active={active} />
-                      <Addbutton content="Rule Maintainer" />
+                      {/* <Addbutton content="Rule Maintainer" /> */}
                     </div>
                   </Grid>
-
                   {/* ================================================================ */}
                   {/* Data Sources */}
                   {/* Data Sources */}

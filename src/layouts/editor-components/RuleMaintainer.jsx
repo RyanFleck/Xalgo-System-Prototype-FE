@@ -23,20 +23,20 @@ function RuleMaintainer({ rule, updateRule, active }) {
       setEmail(rule.metadata.rule.maintainers[0].email);
   }
 
-  /*function saveContent() {
+  function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
     rule.metadata.rule.maintainers[0].name = name;
     rule.metadata.rule.maintainers[0].email = email;
     updateRule(rule);
     setModified(false);
-  }*/
+  }
 
   return (
-    <div>
+    <div onMouseLeave={saveContent}>
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">Rule Maintainer</Text>
         <Box p={1} />
-        <IdDisplay message="Vqp4nv8eGprI" />
+        <IdDisplay message={rule.metadata.rule.maintainers[0].id || "Unregistered User "} />
         <Box padding={1} />
         <FormStandard
           name="Name"
