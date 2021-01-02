@@ -1,56 +1,52 @@
-import React from 'react';
-import { toast } from 'react-toastify';
+import { Redirect } from '@reach/router';
 import Axios from 'axios';
 import axiosRetry from 'axios-retry';
-
-// import { navigate } from '@reach/router';
-
+import React from 'react';
+import { HotKeys } from 'react-hotkeys';
+import { ClockLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 import {
-  deepCopy,
-  generateNewRule,
   addNewCase,
   addNewInputCondition,
   addNewOutputAssertion,
+  deepCopy,
+  generateNewRule,
 } from 'xalgo-rule-processor';
-import EditorLeft from './editor-layouts/EditorLeft';
-import ColumnLabel from '../components/patterns/ColumnLabel';
-import {
-  Box,
-  Text,
-  Flex,
-  Button,
-  Addbutton,
-  InputOutputRow,
-  SentenceEditor,
-  Icon,
-  Grid,
-} from '../components';
-
-import {
-  BlankRows,
-  NameDescription,
-  Metadata,
-  RuleAuthor,
-  RuleManager,
-  InputSources,
-  RuleMaintainer,
-  DataSource,
-  Time,
-  StandardRoleName,
-  InvolvedProduct,
-  OutputPurpose,
-  QualitativeWeights,
-  Entity,
-} from './editor-components';
-import { ClockLoader } from 'react-spinners';
 import { enforceSchemaWithTables } from 'xalgo-rule-processor/dist/processing';
 import { RuleSchema } from 'xalgo-rule-processor/dist/schema';
 import { objectEmpty } from 'xalgo-rule-processor/dist/utilities';
-
-import { downloadRule } from './Dashboard';
-import { Redirect } from '@reach/router';
+import {
+  Addbutton,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Icon,
+  InputOutputRow,
+  SentenceEditor,
+  Text,
+} from '../components';
+import ColumnLabel from '../components/patterns/ColumnLabel';
 import { getAccessToken } from '../utils/api';
 import { getBackendURL } from '../utils/urls';
+import { downloadRule } from './Dashboard';
+import {
+  BlankRows,
+  DataSource,
+  Entity,
+  InputSources,
+  InvolvedProduct,
+  Metadata,
+  NameDescription,
+  OutputPurpose,
+  QualitativeWeights,
+  RuleAuthor,
+  RuleMaintainer,
+  RuleManager,
+  StandardRoleName,
+  Time,
+} from './editor-components';
+import EditorLeft from './editor-layouts/EditorLeft';
 
 axiosRetry(Axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -133,6 +129,10 @@ const topguide = {
   zIndex: '1',
 };
 
+const keyMap = {
+  SAVE: ['command+s', 'command+S', 'Control+s', 'Control+S'],
+};
+
 // This empty rule is the schema without any __descriptions.
 // Temporarily start with three cases.
 const emptyRule = generateNewRule();
@@ -178,6 +178,13 @@ export default class EditorV2 extends React.Component {
 
     this.handleCollapse = this.handleCollapse.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
+
+    this.keyHandlers = {
+      SAVE: (e) => {
+        e.preventDefault();
+        this.persistRuleToStorage(true);
+      },
+    };
   }
 
   componentDidMount() {
@@ -435,6 +442,7 @@ export default class EditorV2 extends React.Component {
 
     return (
       <div>
+        {/*<HotKeys keyMap={keyMap} handlers={this.keyHandlers}>*/}
         <EditorLeft
           title={rule.metadata.rule.title}
           description={rule.metadata.rule.description}
@@ -859,6 +867,7 @@ export default class EditorV2 extends React.Component {
           </div>
         )}
         {!this.props.authenticated ? <Redirect noThrow to="/" /> : null}
+        {/*</HotKeys>*/}
       </div>
     );
   }

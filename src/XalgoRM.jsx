@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Application from './layouts/Application';
-import { ToastContainer, Slide, toast } from 'react-toastify';
+import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   Credentials,
@@ -28,11 +28,8 @@ function XalgoRM() {
   useEffect(() => {
     if (backendUp === null) {
       setBackendUp(false);
-      console.log('Attempting to wake up backend...');
       wakeUpBackend(() => {
-        console.log('Backed is up.');
         setBackendUp(true);
-        toast('Backend is connected!');
       });
     }
     if (credentials.authenticated === null) {
@@ -70,7 +67,7 @@ function XalgoRM() {
           <div id="loading-box">
             <h1>{'LOADING'}</h1>
             <p>Authenticated: {credentials.authenticated ? 'Yes' : 'No'}</p>
-            <p>Backend Up: {backendUp ? 'Ready' : 'Waiting'}</p>
+            <p>Backend Up: {backendUp ? 'Ready!' : 'Waiting...'}</p>
             <br />
             <ClockLoader size={100} />
           </div>
