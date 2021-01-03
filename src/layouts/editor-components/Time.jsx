@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RuleSchema } from 'xalgo-rule-processor';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Box, Flex, Dropdown, Text, FormDropdown } from '../../components';
@@ -11,15 +11,53 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
   const [modified, setModified] = useState(false);
 
   // 1. Set a state for each element that must be filled.
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState('');
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
   const [timezone, setTimezone] = useState('UTC±00:00');
 
-  // Don't touch this.
+  function setVariablesFromDate(dateObject) {
+    /*
+    console.log('Time::setVariablesFromDate()');
+    // Return if the object is empty or already set.
+    if (!dateObject) return;
+    if (dateObject === '') return;
+    console.log('Date is not empty...');
+    console.log(`Type of date ${dateObject} is ${typeof dateObject}`);
+
+    let d;
+    if (!(dateObject instanceof Date)) {
+      console.log('Object is not an instance of date, replace.');
+      d = new Date(Date.parse(dateObject));
+    } else {
+      d = dateObject;
+    }
+
+    if (date instanceof Date && d.getTime() == date.getTime()) {
+      console.log('Date already set.');
+    } else {
+      console.log(`Type of d ${d} is ${typeof d}`);
+
+      console.log('Setting date object from saved file...');
+
+      // Otherwise, set the date.
+      setDate(d);
+      setHour(d.getHours().toString());
+      setMinute(d.getMinutes().toString());
+      setHour(d.getSeconds().toString());
+
+      console.log(
+        `Loaded time ${
+          start ? 'start' : 'end'
+        } date:${d.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
+      );
+    }
+    */
+  }
+
   if (active && !modified) {
-    console.log(`${sectionName} section is being edited.`);
+    console.log("Updating time!")
     if (start && !end) {
       setVariablesFromDate(rule.requirements.time.start);
     } else if (end && !start) {
@@ -27,54 +65,31 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
     } else {
       console.error('Time component configured incorrectly, use start or end prop.');
     }
-    // 2. Ensure each field is set according to the current rule state.
-  }
-
-  function setVariablesFromDate(dateObject) {
-    // Return if the object is empty or already set.
-    if(!(dateObject instanceof Date)){
-      console.log("Date is not a date object, parse...");
-      dateObject = Date.parse(dateObject);
-      if(!(dateObject instanceof Date)) return;
-      if(dateObject.getTime() == NaN) return;
-    }
-    if( date.getTime() === dateObject.getTime()){
-      return;
-    } 
-
-    console.log("Setting date object from saved file...");
-
-    // Otherwise, set the date.
-    setDate(dateObject);
-    setHour(dateObject.getHours());
-    setMinute(dateObject.getMinutes());
-    setHour(dateObject.getSeconds());
-
-    console.log(
-      `Loaded time ${
-        start ? 'start' : 'end'
-      } date:${date.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
-    );
+    console.log('Done loading time...');
   }
 
   function saveContent() {
+    console.log('Time::saveContent()');
+    /*
     console.log(`Saving ${sectionName} to state.`);
     const updatedRule = deepCopy(rule);
 
     // Create a new date object if the root date is empty.
-    let updatedDate = Date.parse(date.toString());
-    if(!(updatedDate instanceof Date)) updatedDate = new Date();
+    let updatedDate = date;
+    if (!(updatedDate instanceof Date)) {
+      console.log('Fail to save content.');
+      return;
+    }
     console.log(
       `Saving time ${
         start ? 'start' : 'end'
       } date:${updatedDate.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
     );
 
-
     console.log(`Date: ${date}`);
-    updatedDate.setHours(hour);
-    updatedDate.setMinutes(minute);
-    updatedDate.setSeconds(second);
+    updatedDate.setHours(Number.parseInt(hour));
+    updatedDate.setMinutes(Number.parseInt(minute));
+    updatedDate.setSeconds(Number.parseInt(second));
 
     if (start && !end) {
       updatedRule.requirements.time.start = updatedDate.toUTCString();
@@ -83,10 +98,11 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
     } else {
       console.error('Time component configured incorrectly, use start or end prop.');
     }
-    
+
     // updatedRule.input_context.jurisdiction[indice].country = country;
     updateRule(updatedRule);
     setModified(false);
+    */
   }
 
   return (
@@ -94,7 +110,13 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">{label}</Text>
         <Box padding={1} />
-        <DayPickerInput value={date} onDayChange={setDate} />
+        <DayPickerInput
+          value={date}
+          onDayChange={(d) => {
+            setDate(d);
+            setModified(true);
+          }}
+        />
         <Box padding={1} />
         <Flex alignItems="center">
           <Dropdown
