@@ -41,8 +41,8 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
     console.log(`date: ${typeof date}: ${date}`);
     console.log(`savedDate: ${typeof savedDate}: ${savedDate}`);
 
-    if(savedDate && (!date || formatDate(date) !== formatDate(savedDate))){
-      console.log("Setting date...");
+    if (savedDate && (!date || formatDate(date) !== formatDate(savedDate))) {
+      console.log('Setting date...');
       setDate(savedDate);
     }
     // 2. Ensure each field is set according to the current rule state.
@@ -54,11 +54,11 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
     const newRule = deepCopy(rule);
     console.log(`Saving ${sectionName} to state.`);
     // newRule.metadata.rule.url = url;
-    if(start && date){
+    if (start && date) {
       newRule.requirements.time.start = formatDate(date);
       updateRule(newRule);
       setModified(false);
-    }else if(end && date){
+    } else if (end && date) {
       newRule.requirements.time.end = formatDate(date);
       updateRule(newRule);
       setModified(false);

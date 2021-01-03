@@ -17,16 +17,14 @@ function Entity({ rule, updateRule, active }) {
     console.log(`${sectionName} section is being edited.`);
 
     // 2. Ensure each field is set according to the current rule state.
-    if (name !== rule.metadata.rule.entity[0].name)
-      setName(rule.metadata.rule.entity[0].name);
-    if (url !== rule.metadata.rule.entity[0].url)
-      setUrl(rule.metadata.rule.entity[0].url);
+    if (name !== rule.metadata.rule.entity[0].name) setName(rule.metadata.rule.entity[0].name);
+    if (url !== rule.metadata.rule.entity[0].url) setUrl(rule.metadata.rule.entity[0].url);
   }
 
   function saveContent() {
     console.log(`Saving ${sectionName} to state.`);
     rule.metadata.rule.entity[0].name = name;
-    rule.metadata.rule.entity[0].url= url;
+    rule.metadata.rule.entity[0].url = url;
     updateRule(rule);
     setModified(false);
   }

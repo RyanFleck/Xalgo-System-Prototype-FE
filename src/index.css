@@ -74,7 +74,7 @@ a {
   background: rgb(143, 143, 143);
 }
 
-#loading-box{
+#loading-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,8 +89,8 @@ a {
   margin: 0.1em;
 }
 
-.DayPickerInput input{
-  border: 1px solid #DDD;
+.DayPickerInput input {
+  border: 1px solid #ddd;
   border-radius: 5px;
   padding: 1rem;
   width: 100%;

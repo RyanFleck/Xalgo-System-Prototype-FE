@@ -35,7 +35,7 @@ function RuleAuthor({ rule, updateRule, active }) {
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">Rule Author</Text>
         <Box p={1} />
-        <IdDisplay message={rule.metadata.rule.authors[0].id || "Unregistered User "} />
+        <IdDisplay message={rule.metadata.rule.authors[0].id || 'Unregistered User '} />
         <Box padding={1} />
         <FormStandard
           name="Name"
