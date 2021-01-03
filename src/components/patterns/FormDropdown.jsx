@@ -1,7 +1,16 @@
 import React from 'react';
 import { Stack, Dropdown, Box, Button, Text, Flex, Modal, Infobox, IInfo, ErrorMessage } from '..';
 
-function FormDropdown({ name, description, label, value, errormessage, options = [], onChange }) {
+function FormDropdown({
+  disabled,
+  name,
+  description,
+  label,
+  value,
+  errormessage,
+  options = [],
+  onChange,
+}) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const renderOptions = () => {
@@ -27,7 +36,7 @@ function FormDropdown({ name, description, label, value, errormessage, options =
         </Button>
       </Flex>
       <Box padding={1} />
-      <Dropdown value={value} onChange={onChange} placeholder={''}>
+      <Dropdown disabled={disabled} value={value} onChange={onChange} placeholder={''}>
         {renderOptions()}
         <option value="" disabled hidden>
           Select

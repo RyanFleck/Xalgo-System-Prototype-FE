@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RuleSchema } from 'xalgo-rule-processor';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Box, Flex, Dropdown, Text, FormDropdown } from '../../components';
@@ -11,98 +11,58 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
   const [modified, setModified] = useState(false);
 
   // 1. Set a state for each element that must be filled.
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(null);
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
   const [timezone, setTimezone] = useState('UTC±00:00');
 
-  function setVariablesFromDate(dateObject) {
-    /*
-    console.log('Time::setVariablesFromDate()');
-    // Return if the object is empty or already set.
-    if (!dateObject) return;
-    if (dateObject === '') return;
-    console.log('Date is not empty...');
-    console.log(`Type of date ${dateObject} is ${typeof dateObject}`);
-
-    let d;
-    if (!(dateObject instanceof Date)) {
-      console.log('Object is not an instance of date, replace.');
-      d = new Date(Date.parse(dateObject));
-    } else {
-      d = dateObject;
-    }
-
-    if (date instanceof Date && d.getTime() == date.getTime()) {
-      console.log('Date already set.');
-    } else {
-      console.log(`Type of d ${d} is ${typeof d}`);
-
-      console.log('Setting date object from saved file...');
-
-      // Otherwise, set the date.
-      setDate(d);
-      setHour(d.getHours().toString());
-      setMinute(d.getMinutes().toString());
-      setHour(d.getSeconds().toString());
-
-      console.log(
-        `Loaded time ${
-          start ? 'start' : 'end'
-        } date:${d.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
-      );
-    }
-    */
+  function parseDate(d) {
+    // Converts a date or string to a valid date object.
+    const date = new Date(d);
+    return date;
   }
 
+  function formatDate(d) {
+    // Formats a date as a correct UTC string.
+    return d.toUTCString();
+  }
+
+  // Don't touch this.
   if (active && !modified) {
-    console.log("Updating time!")
-    if (start && !end) {
-      setVariablesFromDate(rule.requirements.time.start);
-    } else if (end && !start) {
-      setVariablesFromDate(rule.requirements.time.end);
-    } else {
-      console.error('Time component configured incorrectly, use start or end prop.');
+    console.log(`${sectionName} section is being edited.`);
+    let savedDate;
+    if (start) {
+      savedDate = parseDate(rule.requirements.time.start);
+    } else if (end) {
+      savedDate = parseDate(rule.requirements.time.end);
     }
-    console.log('Done loading time...');
+
+    console.log(`date: ${typeof date}: ${date}`);
+    console.log(`savedDate: ${typeof savedDate}: ${savedDate}`);
+
+    if(savedDate && (!date || formatDate(date) !== formatDate(savedDate))){
+      console.log("Setting date...");
+      setDate(savedDate);
+    }
+    // 2. Ensure each field is set according to the current rule state.
+    // if (url !== rule.metadata.rule.url) setUrl(rule.metadata.rule.url);
   }
 
   function saveContent() {
-    console.log('Time::saveContent()');
-    /*
+    // Remember not to modify the rule prop.
+    const newRule = deepCopy(rule);
     console.log(`Saving ${sectionName} to state.`);
-    const updatedRule = deepCopy(rule);
-
-    // Create a new date object if the root date is empty.
-    let updatedDate = date;
-    if (!(updatedDate instanceof Date)) {
-      console.log('Fail to save content.');
-      return;
+    // newRule.metadata.rule.url = url;
+    if(start && date){
+      newRule.requirements.time.start = formatDate(date);
+      updateRule(newRule);
+      setModified(false);
+    }else if(end && date){
+      newRule.requirements.time.end = formatDate(date);
+      updateRule(newRule);
+      setModified(false);
     }
-    console.log(
-      `Saving time ${
-        start ? 'start' : 'end'
-      } date:${updatedDate.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
-    );
-
-    console.log(`Date: ${date}`);
-    updatedDate.setHours(Number.parseInt(hour));
-    updatedDate.setMinutes(Number.parseInt(minute));
-    updatedDate.setSeconds(Number.parseInt(second));
-
-    if (start && !end) {
-      updatedRule.requirements.time.start = updatedDate.toUTCString();
-    } else if (end && !start) {
-      updatedRule.requirements.time.end = updatedDate.toUTCString();
-    } else {
-      console.error('Time component configured incorrectly, use start or end prop.');
-    }
-
-    // updatedRule.input_context.jurisdiction[indice].country = country;
-    updateRule(updatedRule);
-    setModified(false);
-    */
   }
 
   return (
@@ -120,6 +80,7 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
         <Box padding={1} />
         <Flex alignItems="center">
           <Dropdown
+            disabled
             value={hour}
             onChange={(e) => {
               setHour(e.target.value);
@@ -192,6 +153,7 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
           </Dropdown>
           <Box padding={1} />
           <Dropdown
+            disabled
             value={minute}
             onChange={(e) => {
               setMinute(e.target.value);
@@ -265,6 +227,7 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
           <Box padding={1} />
           <Dropdown
             value={second}
+            disabled
             onChange={(e) => {
               setSecond(e.target.value);
               setModified(true);
@@ -338,6 +301,7 @@ function Time({ rule, updateRule, active, section, label, start = false, end = f
         <Box padding={1} />
         <FormDropdown
           name="Time Zone"
+          disabled
           description={RuleSchema.input_context.__timezone}
           value={timezone}
           onChange={(e) => {
