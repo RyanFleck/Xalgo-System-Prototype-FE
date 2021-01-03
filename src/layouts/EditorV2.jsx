@@ -121,8 +121,8 @@ const heightAdjust = {
 
 const topguide = {
   position: 'fixed',
-  padding: '2em',
-  background: '#F9FBFE',
+  padding: '1em 2em 3em 2em',
+  background: 'linear-gradient(#F9FBFE 50%, transparent)',
   width: '100%',
   zIndex: '1',
 };
