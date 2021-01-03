@@ -2,65 +2,111 @@ import React, { useState } from 'react';
 import { RuleSchema } from 'xalgo-rule-processor';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Box, Flex, Dropdown, Text, FormDropdown } from '../../components';
+import { deepCopy } from 'xalgo-rule-processor/dist/utilities';
 
-function Time({ rule, updateRule, active, section, label, start=false, end=false }) {
+function Time({ rule, updateRule, active, section, label, start = false, end = false }) {
   // 0. Fill out the section name.
-  const sectionName = 'Rule Information';
+  const sectionName = 'Time Information';
   // const sectionDesc = 'Begin your rule by providing a title and concise description.';
-  const [modified] = useState(false);
+  const [modified, setModified] = useState(false);
 
   // 1. Set a state for each element that must be filled.
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
+  const [date, setDate] = useState("");
+  const [hour, setHour] = useState('');
+  const [minute, setMinute] = useState('');
+  const [second, setSecond] = useState('');
+  const [timezone, setTimezone] = useState('UTC±00:00');
 
   // Don't touch this.
   if (active && !modified) {
     console.log(`${sectionName} section is being edited.`);
-
+    if (start && !end) {
+      setVariablesFromDate(rule.requirements.time.start);
+    } else if (end && !start) {
+      setVariablesFromDate(rule.requirements.time.end);
+    } else {
+      console.error('Time component configured incorrectly, use start or end prop.');
+    }
     // 2. Ensure each field is set according to the current rule state.
-    if (title !== rule.metadata.rule.title) setTitle(rule.metadata.rule.title);
-    if (desc !== rule.metadata.rule.description) setDesc(rule.metadata.rule.description);
   }
 
-  // 3. Return a rendering of the component.
+  function setVariablesFromDate(dateObject) {
+    // Return if the object is empty or already set.
+    if(!(dateObject instanceof Date)){
+      console.log("Date is not a date object, parse...");
+      dateObject = Date.parse(dateObject);
+      if(!(dateObject instanceof Date)) return;
+      if(dateObject.getTime() == NaN) return;
+    }
+    if( date.getTime() === dateObject.getTime()){
+      return;
+    } 
+
+    console.log("Setting date object from saved file...");
+
+    // Otherwise, set the date.
+    setDate(dateObject);
+    setHour(dateObject.getHours());
+    setMinute(dateObject.getMinutes());
+    setHour(dateObject.getSeconds());
+
+    console.log(
+      `Loaded time ${
+        start ? 'start' : 'end'
+      } date:${date.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
+    );
+  }
+
+  function saveContent() {
+    console.log(`Saving ${sectionName} to state.`);
+    const updatedRule = deepCopy(rule);
+
+    // Create a new date object if the root date is empty.
+    let updatedDate = Date.parse(date.toString());
+    if(!(updatedDate instanceof Date)) updatedDate = new Date();
+    console.log(
+      `Saving time ${
+        start ? 'start' : 'end'
+      } date:${updatedDate.toUTCString()} hour:${hour} minute:${minute} second:${second} tz:${timezone}`
+    );
+
+
+    console.log(`Date: ${date}`);
+    updatedDate.setHours(hour);
+    updatedDate.setMinutes(minute);
+    updatedDate.setSeconds(second);
+
+    if (start && !end) {
+      updatedRule.requirements.time.start = updatedDate.toUTCString();
+    } else if (end && !start) {
+      updatedRule.requirements.time.end = updatedDate.toUTCString();
+    } else {
+      console.error('Time component configured incorrectly, use start or end prop.');
+    }
+    
+    // updatedRule.input_context.jurisdiction[indice].country = country;
+    updateRule(updatedRule);
+    setModified(false);
+  }
+
   return (
-    <div>
+    <div onMouseLeave={saveContent}>
       <Box border="1px solid" borderColor="oline" borderRadius="base" p={3} bg="#fff">
         <Text variant="formtitle">{label}</Text>
         <Box padding={1} />
-        <DayPickerInput />
+        <DayPickerInput value={date} onDayChange={setDate} />
         <Box padding={1} />
         <Flex alignItems="center">
-          <Dropdown>
-            <option hidden>Hour</option>
-            <option>00</option>
-            <option>01</option>
-            <option>02</option>
-            <option>03</option>
-            <option>04</option>
-            <option>05</option>
-            <option>06</option>
-            <option>07</option>
-            <option>08</option>
-            <option>09</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
-            <option>16</option>
-            <option>17</option>
-            <option>18</option>
-            <option>19</option>
-            <option>20</option>
-            <option>21</option>
-            <option>22</option>
-            <option>23</option>
-          </Dropdown>
-          <Box padding={1} />
-          <Dropdown>
-            <option hidden>Minute</option>
+          <Dropdown
+            value={hour}
+            onChange={(e) => {
+              setHour(e.target.value);
+              setModified(true);
+            }}
+          >
+            <option hidden value="">
+              Hour
+            </option>
             <option>00</option>
             <option>01</option>
             <option>02</option>
@@ -123,8 +169,88 @@ function Time({ rule, updateRule, active, section, label, start=false, end=false
             <option>59</option>
           </Dropdown>
           <Box padding={1} />
-          <Dropdown>
-            <option hidden>Second</option>
+          <Dropdown
+            value={minute}
+            onChange={(e) => {
+              setMinute(e.target.value);
+              setModified(true);
+            }}
+          >
+            <option hidden value="">
+              Minute
+            </option>
+            <option>00</option>
+            <option>01</option>
+            <option>02</option>
+            <option>03</option>
+            <option>04</option>
+            <option>05</option>
+            <option>06</option>
+            <option>07</option>
+            <option>08</option>
+            <option>09</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+            <option>32</option>
+            <option>33</option>
+            <option>34</option>
+            <option>35</option>
+            <option>36</option>
+            <option>37</option>
+            <option>38</option>
+            <option>39</option>
+            <option>40</option>
+            <option>41</option>
+            <option>42</option>
+            <option>43</option>
+            <option>44</option>
+            <option>45</option>
+            <option>46</option>
+            <option>47</option>
+            <option>48</option>
+            <option>49</option>
+            <option>50</option>
+            <option>51</option>
+            <option>52</option>
+            <option>53</option>
+            <option>54</option>
+            <option>55</option>
+            <option>56</option>
+            <option>57</option>
+            <option>58</option>
+            <option>59</option>
+          </Dropdown>
+          <Box padding={1} />
+          <Dropdown
+            value={second}
+            onChange={(e) => {
+              setSecond(e.target.value);
+              setModified(true);
+            }}
+          >
+            <option hidden value="">
+              Second
+            </option>
             <option>00</option>
             <option>01</option>
             <option>02</option>
@@ -191,6 +317,11 @@ function Time({ rule, updateRule, active, section, label, start=false, end=false
         <FormDropdown
           name="Time Zone"
           description={RuleSchema.input_context.__timezone}
+          value={timezone}
+          onChange={(e) => {
+            setTimezone(e.target.value);
+            setModified(true);
+          }}
           options={[
             { value: 'UTC−12:00', label: 'UTC−12:00' },
             { value: 'UTC−11:00', label: 'UTC−11:00' },

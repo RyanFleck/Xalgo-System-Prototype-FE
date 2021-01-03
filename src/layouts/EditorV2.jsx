@@ -620,7 +620,13 @@ export default class EditorV2 extends React.Component {
                       {/* This is the Jurisdiction editor. */}
                       {rule.input_context.jurisdiction.map((val, index) => {
                         return (
-                          <DataSource key={index} rule={rule} updateRule={this.updateRule} active={active} indice={index} />
+                          <DataSource
+                            key={index}
+                            rule={rule}
+                            updateRule={this.updateRule}
+                            active={active}
+                            indice={index}
+                          />
                         );
                       })}
                       <Addbutton
@@ -631,8 +637,20 @@ export default class EditorV2 extends React.Component {
                         }}
                       />
                     </div>
-                    <Time label="Start Time" start/>
-                    <Time label="End Time" end/>
+                    <Time
+                      label="Start Time"
+                      start
+                      rule={rule}
+                      updateRule={this.updateRule}
+                      active={active}
+                    />
+                    <Time
+                      label="End Time"
+                      end
+                      rule={rule}
+                      updateRule={this.updateRule}
+                      active={active}
+                    />
                   </Grid>
 
                   {/* ================================================================ */}
