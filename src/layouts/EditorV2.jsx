@@ -667,11 +667,11 @@ export default class EditorV2 extends React.Component {
                   <Grid gridTemplateColumns="33% 33% 33%" gridGap="2em">
                     <div>
                       <StandardRoleName />
-                      <Addbutton content="Standard Role Name" />
+                      {/*<Addbutton content="Standard Role Name" />*/}
                     </div>
                     <div>
                       <InvolvedProduct />
-                      <Addbutton content="Involved Product or Service" />
+                      {/*<Addbutton content="Involved Product or Service" />*/}
                     </div>
                   </Grid>
 

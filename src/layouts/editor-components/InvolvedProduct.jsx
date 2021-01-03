@@ -41,11 +41,13 @@ function StandardRoleName({ rule, updateRule, active }) {
         <Text variant="formtitle">Involved Product or Service</Text>
         <Box padding={1} />
         <FormStandard
+          disabled
           name="UNSPSC Product or Service Code"
           description={RuleSchema.input_filters.involved_product_service[0].__nspsc_code}
         />
         <Box padding={1} />
         <FormStandard
+          disabled
           name="UNSPSC Product or Service Name"
           description={RuleSchema.input_filters.involved_product_service[0].__unspsc_name}
         />

@@ -41,6 +41,7 @@ function StandardRoleName({ rule, updateRule, active }) {
         <Text variant="formtitle">Standard Role Name</Text>
         <Box padding={1} />
         <FormStandard
+          disabled
           name="ISIC Industry Code"
           description={RuleSchema.input_filters.standard_role_name[0].__isic_industry_code}
           value={code}
@@ -51,6 +52,7 @@ function StandardRoleName({ rule, updateRule, active }) {
         />
         <Box padding={1} />
         <FormStandard
+          disabled
           name="ISIC Industry Name"
           description={RuleSchema.input_filters.standard_role_name[0].__isic_industry_name}
           value={name}
