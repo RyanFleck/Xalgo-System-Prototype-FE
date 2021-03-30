@@ -1,3 +1,12 @@
+<br />
+<br />
+
+**MOVED:** https://gitlab.com/xalgorithms-alliance/Xalgo-DevRM-v1-FE
+
+<br />
+<br />
+<br />
+
 # Xalgorithms DevRM Prototype v0.4
 
 Deployed at: <https://xalgo-dev-rm.vercel.app/>
