@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "@xalgorithms/rm-components": "^0.0.12",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "axios-retry": "^3.1.9",
     "eslint": "^7.16.0",
     "file-saver": "^2.0.5",
